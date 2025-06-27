@@ -1,3 +1,20 @@
 pipeline {
+  agent any
 
+   stages {
+        stage ("Checkout SCM") {
+            steps {
+                git branch: 'main', url: 'https://github.com/linux-best/CI-CD_pipelines/'
+            }
+        }
+        stage ("load script") {
+            steps {
+                script {
+                    def script = load 'gro.groovy'
+                    def log = script.add()
+                    echo "${log}"
+                }
+            }
+        }
+    }
 }
