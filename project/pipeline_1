@@ -10,7 +10,7 @@ pipeline {
     }
     
     stages {
-        stage (Checkout SCM_Script) {
+        stage (Checkout Script) {
             steps {
                 git branch: 'main', url: 'https://github.com/linux-best/scripts/'   
             }
