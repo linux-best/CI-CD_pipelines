@@ -18,7 +18,7 @@ pipeline {
         stage ("load script") {
             steps {
                 script {
-                    def script = load 'gro.groovy'
+                    def script = load 'project/gro.groovy'
                     def log = script.log()
                     echo "${log}"
                 }
