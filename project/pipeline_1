@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage ("Checkout Script") {
             steps {
-                git branch: 'main', url: 'https://github.com/linux-best/scripts/'   
+                git branch: 'main', url: 'https://github.com/linux-best/CI-CD_pipelines/'   
             }
         }
         stage ("load script") {
