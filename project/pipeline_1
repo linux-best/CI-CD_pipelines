@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     def script = load 'gro.groovy'
-                    def log = script.add()
+                    def log = script.log()
                     echo "${log}"
                 }
             }
