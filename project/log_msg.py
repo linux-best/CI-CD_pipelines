@@ -10,15 +10,15 @@ logger.add(path ,
 )
 
 match sys.argv[2] :
-    case "0" :
-        with logger.contextualize(log=sys.argv[3]):
-            logger.info(sys.argv[1])
     case "1" :
         with logger.contextualize(log=sys.argv[3]):
             logger.info(sys.argv[1])
     case "2" :
         with logger.contextualize(log=sys.argv[3]):
-            logger.info(sys.argv[1])                
+            logger.success(sys.argv[1])
+    case "3" :
+        with logger.contextualize(log=sys.argv[3]):
+            logger.error(sys.argv[1])                
 
 #print(f"Script name: {sys.argv[0]}") # [0] is always the anme of the script
 #if len(sys.argv) > 1:
