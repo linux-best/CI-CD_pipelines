@@ -10,24 +10,19 @@ pipeline {
     }
     
     stages {
-        stage ("Checkout Script_Scm") {
-            steps {
-                git branch: 'main', url: 'https://github.com/linux-best/CI-CD_pipelines/'
-            }
-        }
         stage ("load script") {
             steps {
                 script {
-                    def script_1 = load 'gro.groovy'
+                    def script = load 'gro.groovy'
+                    def log = script.add()
+                    echo "${log}"
                 }
             }
         }
         stage ("Checkout SCM") {
             steps {
                 git branch: 'main', url: 'https://github.com/linux-best/scripts/'
-                script {
-                    def log = script_1.log()
-                }
+                
             }
         }
         stage ("Command_Execution") {
