@@ -1,4 +1,4 @@
-def log(a,b,c) {
+def log() {
     sh "python3 hello.py"
 }
 

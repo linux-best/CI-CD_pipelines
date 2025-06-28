@@ -26,7 +26,7 @@ pipeline {
             steps {
                 git branch: 'main', url: 'https://github.com/linux-best/scripts/'
                 script {
-                    def log = script_1.log("stage was successful",0,"stage_SCM")
+                    def log = script_1.log()
                 }
             }
         }
