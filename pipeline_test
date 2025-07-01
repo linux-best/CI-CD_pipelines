@@ -4,7 +4,6 @@ pipeline {
         stage ("Checkout SCM") {
             steps {
                 git branch: 'main', url: 'https://github.com/linux-best/CI-CD_pipelines/'
-                
             }
         }
         stage ("Command_Execution") {
