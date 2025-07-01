@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     def script = load 'project/gro.groovy'
-                    def log = script.log("stage has been Done !",2,true)
+                    def log = script.log("log successed",2,true)
                     echo "${log}"
                 }
             }
