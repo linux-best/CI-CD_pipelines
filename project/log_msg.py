@@ -9,6 +9,8 @@ logger.add(path ,
            level="DEBUG"
 )
 
+print(sys.argv[1],sys.argv[2],sys.argv[3])
+
 match sys.argv[2] :
     case "1" :
         with logger.contextualize(log=sys.argv[3]):
