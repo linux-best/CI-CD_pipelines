@@ -22,7 +22,7 @@ pipeline {
                 dir("script_load") {
                     script {
                         def script = load 'project/gro.groovy'
-                        def log = script.log("log successed","2",true)
+                        def log = script.log("log successed",2,true)
                         echo "${log}"
                     }
                 }
