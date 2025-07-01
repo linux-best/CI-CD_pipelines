@@ -8,7 +8,9 @@ pipeline {
         }
         stage ("load script") {
             steps {
-                sh "sudo python3 project/log_msg.py "log successed" "2" true"
+                sh """
+                sudo python3 project/log_msg.py "log successed" "2" true
+                """
             }
         }
     }
