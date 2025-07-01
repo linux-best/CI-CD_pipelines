@@ -9,8 +9,7 @@ pipeline {
         }
         stage ("Command_Execution") {
             steps {
-                sh "sudo python3 "
-            }
+                sh "sudo python3 project/log_msg.py "stage was successful" 1 ${z}"            }
             
         }
         stage ("Build") {
