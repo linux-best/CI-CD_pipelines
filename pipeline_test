@@ -1,16 +1,15 @@
 pipeline {
     agent any
     stages {
-        stage ("Checkout SCM") {
+        stage ("Checkout Script") {
             steps {
-                git branch: 'main', url: 'https://github.com/linux-best/CI-CD_pipelines/'
+                git branch: 'main', url: 'https://github.com/linux-best/CI-CD_pipelines/'   
             }
         }
-        stage ("Command_Execution") {
+        stage ("load script") {
             steps {
-                sh "sudo python3 log_msg.py "log success" "1" "true""
+                sh "ls -l"
             }
-        }
     }
     post {
         success {
