@@ -36,7 +36,7 @@ pipeline {
                     sh "ls -lha"
                 }
                 script {
-                    def log_2 = script_1.logmsg("success","stage was successful","stage =>(Command_Execution)")
+                    def log_2 = script_1.logmsg("info","stage was successful","stage =>(Command_Execution)")
                 }
             }
         }
@@ -51,7 +51,7 @@ pipeline {
                 echo "My name is ${env.NAME}"
                 echo "My last name is ${env.LAST_NAME}"
                 script {
-                    def log_1 = script_1.logmsg("success","stage was successful","stage =>(load_script)")
+                    def log_1 = script_1.logmsg("info","stage was successful","stage =>(load_script)")
                 }
             }
         }
@@ -72,6 +72,7 @@ pipeline {
                     Check the detals at ${env.BUILD_URL}""",
                     to: "amirmahdifhp@gmail.com"
                 )
+                def log_1 = script_1.logmsg("success","pipeline was successful","stage =>(email_notification)")
             }
         } // email
         failure {
@@ -83,6 +84,7 @@ pipeline {
                     Check the details at ${env.BUILD_URL}""",
                     to: "amirmahdifhp@gmail.com"
                 )
+                def log_1 = script_1.logmsg("error","pipeline has failed","stage =>(email_notification)")
             }
         } // email
     }
