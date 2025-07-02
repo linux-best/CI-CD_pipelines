@@ -9,7 +9,7 @@ pipeline {
         result_server = sh (script:'ping -c 4 192.168.1.8', returnStdout: true).trim()
     }
 
-    def script = null
+    def script_1 = null
     
     stages {
         stage ("Checkout Script") {
@@ -20,8 +20,8 @@ pipeline {
         stage ("load script") {
             steps {
                 script {
-                    script = load 'project/gro.groovy'
-               }
+                    script_1 = load 'project/gro.groovy'
+                }
             }
         }
         stage ("Checkout SCM") {
@@ -37,7 +37,7 @@ pipeline {
                     sh "ls -lha"
                 }
                 script {
-                    def log_2 = script.logmsg("success","stage was successful","stage =>(Command_Execution)")
+                    def log_2 = script_1.logmsg("success","stage was successful","stage =>(Command_Execution)")
                 }
             }
         }
@@ -52,7 +52,7 @@ pipeline {
                 echo "My name is ${env.NAME}"
                 echo "My last name is ${env.LAST_NAME}"
                 script {
-                    def log_1 = script.logmsg("success","stage was successful","stage =>(load_script)")
+                    def log_1 = script_1.logmsg("success","stage was successful","stage =>(load_script)")
                 }
             }
         }
