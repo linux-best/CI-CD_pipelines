@@ -17,6 +17,9 @@ if a == "info" :
 elif a == "success" :
     with logger.contextualize(status=sys.argv[3]):
 	    logger.success(f"{sys.argv[2]}")
+elif a == "error" :
+    with logger.contextualize(status=sys.argv[3]):
+	    logger.error(f"{sys.argv[2]}")
 
 
 #print(f"Script name: {sys.argv[0]}") # [0] is always the anme of the script
