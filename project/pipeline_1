@@ -12,14 +12,14 @@ pipeline {
     stages {
         stage ("Checkout Script") {
             steps {
-                dir("script_load") {
+                dir("ci/cd pipeline") {
                     git branch: 'main', url: 'https://github.com/linux-best/CI-CD_pipelines/'
                 }
             }
         }
         stage ("load script") {
             steps {
-                dir("script_load") {
+                dir("ci/cd pipeline") {
                     script {
                         def script = load 'project/gro.groovy'
                         def log_1 = script.logmsg("success","stage was successful","stage =>(load_script)")
@@ -30,15 +30,17 @@ pipeline {
         }
         stage ("Checkout SCM") {
             steps {
-                git branch: 'main', url: 'https://github.com/linux-best/scripts/'
-                
+                dir("scripts") {
+                    git branch: 'main', url: 'https://github.com/linux-best/scripts/'
+                }                
             }
         }
         stage ("Command_Execution") {
             steps {
-                sh "ls -lha"
+                dir("scripts") {
+                    sh "ls -lha"
+                }
             }
-            
         }
         stage ("Build") {
             when {
