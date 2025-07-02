@@ -4,9 +4,9 @@ def log(x ,y ,z) {
     """
 }
 
-def logmsg(n) {
+def logmsg(n,m) {
     sh """
-    sudo python3 project/hello.py ${n}
+    sudo python3 project/hello.py ${n} ${m}
     """
 }
 
