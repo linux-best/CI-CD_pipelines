@@ -1,4 +1,3 @@
-
 import sys
 from loguru import logger
 
@@ -13,3 +12,5 @@ a = sys.argv[1]
 
 if a == "info" :
     logger.info("log")
+elif a == "success" :
+    logger.success("log")
