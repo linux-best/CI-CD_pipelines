@@ -12,10 +12,10 @@ logger.add(path ,
 a = sys.argv[1]
 
 if a == "info" :
-    with logger.contextualize(stage=sys.argv[3]):
+    with logger.contextualize(status=sys.argv[3]):
     	logger.info(f"{sys.argv[2]}")
 elif a == "success" :
-    with logger.contextualize(stage=sys.argv[3]):
+    with logger.contextualize(status=sys.argv[3]):
 	    logger.success(f"{sys.argv[2]}")
 
 
