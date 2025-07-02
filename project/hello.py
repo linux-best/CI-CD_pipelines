@@ -12,4 +12,4 @@ logger.add(path ,
 a = sys.argv[1]
 
 if a == "info" :
-    logger.info(f"log_msg => {sys.argv[1]}")
+    print(f"log_msg=> {sys.argv[1]}")
