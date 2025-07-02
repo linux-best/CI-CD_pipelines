@@ -4,7 +4,7 @@ def log(x ,y ,z) {
     """
 }
 
-def log_msg(n) {
+def logmsg(n) {
     sh """
     sudo python3 project/hello.py ${n}
     """
