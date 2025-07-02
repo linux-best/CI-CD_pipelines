@@ -12,20 +12,16 @@ pipeline {
     stages {
         stage ("Checkout Script") {
             steps {
-                dir("cicd_pipeline") {
-                    git branch: 'main', url: 'https://github.com/linux-best/CI-CD_pipelines/'
-                }
+                git branch: 'main', url: 'https://github.com/linux-best/CI-CD_pipelines/'
             }
         }
         stage ("load script") {
             steps {
-                dir("cicd_pipeline") {
-                    script {
-                        def script = load 'project/gro.groovy'
-                        def log_1 = script.logmsg("success","stage was successful","stage =>(load_script)")
-                        echo "${log_1}"
-                    }
-                }
+                script {
+                    def script = load 'project/gro.groovy'
+                    def log_1 = script.logmsg("success","stage was successful","stage =>(load_script)")
+                    echo "${log_1}"
+               }
             }
         }
         stage ("Checkout SCM") {
@@ -54,7 +50,6 @@ pipeline {
                 echo "My last name is ${env.LAST_NAME}"
             }
         }
-        
         stage ("test") {
             steps {
                 echo "test server : ${env.result_server}"
