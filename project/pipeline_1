@@ -6,6 +6,7 @@ pipeline {
         LAST_NAME = 'fathipoor'
         VALUE = 1
         result_ISP = sh (script:'ping -c 4 8.8.8.8', returnStdout: true).trim()
+        script = load 'project/gro.groovy'
         result_server = sh (script:'ping -c 4 192.168.1.8', returnStdout: true).trim()
     }
     
@@ -18,7 +19,6 @@ pipeline {
         stage ("load script") {
             steps {
                 script {
-                    def script = load 'project/gro.groovy'
                     def log_1 = script.logmsg("success","stage was successful","stage =>(load_script)")
                     echo "${log_1}"
                }
