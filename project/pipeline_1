@@ -36,6 +36,9 @@ pipeline {
                 dir("scripts") {
                     sh "ls -lha"
                 }
+                script {
+                    def log_2 = script.logmsg("success","stage was successful","stage =>(Command_Execution)")
+                }
             }
         }
         stage ("Build") {
