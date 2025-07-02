@@ -12,14 +12,14 @@ pipeline {
     stages {
         stage ("Checkout Script") {
             steps {
-                dir("ci/cd pipeline") {
+                dir("cicd_pipeline") {
                     git branch: 'main', url: 'https://github.com/linux-best/CI-CD_pipelines/'
                 }
             }
         }
         stage ("load script") {
             steps {
-                dir("ci/cd pipeline") {
+                dir("cicd_pipeline") {
                     script {
                         def script = load 'project/gro.groovy'
                         def log_1 = script.logmsg("success","stage was successful","stage =>(load_script)")
