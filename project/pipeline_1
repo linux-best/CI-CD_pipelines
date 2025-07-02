@@ -6,9 +6,10 @@ pipeline {
         LAST_NAME = 'fathipoor'
         VALUE = 1
         result_ISP = sh (script:'ping -c 4 8.8.8.8', returnStdout: true).trim()
-        def script = load 'project/gro.groovy'
         result_server = sh (script:'ping -c 4 192.168.1.8', returnStdout: true).trim()
     }
+
+    def script = null
     
     stages {
         stage ("Checkout Script") {
@@ -19,8 +20,7 @@ pipeline {
         stage ("load script") {
             steps {
                 script {
-                    def log_1 = script.logmsg("success","stage was successful","stage =>(load_script)")
-                    echo "${log_1}"
+                    script = load 'project/gro.groovy'
                }
             }
         }
@@ -51,6 +51,9 @@ pipeline {
                 echo "Hi"
                 echo "My name is ${env.NAME}"
                 echo "My last name is ${env.LAST_NAME}"
+                script {
+                    def log_1 = script.logmsg("success","stage was successful","stage =>(load_script)")
+                }
             }
         }
         stage ("test") {
