@@ -11,5 +11,5 @@ logger.add(path ,
 
 a = sys.argv[1]
 
-if a == "amir" :
+if a == "info" :
     logger.info("log")
