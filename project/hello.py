@@ -11,6 +11,6 @@ logger.add(path ,
 a = sys.argv[1]
 
 if a == "info" :
-    logger.info("log")
+    logger.info(f"{sys.argv[2]}")
 elif a == "success" :
-    logger.success("log")
+    logger.success(f"sys.argv[2]")
