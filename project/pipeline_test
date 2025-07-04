@@ -14,12 +14,16 @@ pipeline {
         stage ("Checkout Script") {
             steps {
                 git branch: 'main', url: 'https://github.com/linux-best/CI-CD_pipelines/'
+                script {
+                    def log_1 = script_1.logmsg("info","pipeline started","stage =>(checkout_SCM)")
+                }
             }
         }
         stage ("load script") {
             steps {
                 script {
                     script_1 = load 'project/project_file.groovy'
+                    def log_2 = script_1.logmsg("info","stage was successful","stage =>(Loading_script)")
                 }
             }
         }
@@ -36,7 +40,7 @@ pipeline {
                     sh "ls -lha"
                 }
                 script {
-                    def log_2 = script_1.logmsg("info","stage was successful","stage =>(Command_Execution)")
+                    def log_3 = script_1.logmsg("info","stage was successful","stage =>(Command_Execution)")
                 }
             }
         }
@@ -51,7 +55,7 @@ pipeline {
                 echo "My name is ${env.NAME}"
                 echo "My last name is ${env.LAST_NAME}"
                 script {
-                    def log_1 = script_1.logmsg("info","stage was successful","stage =>(echo_script)")
+                    def log_4 = script_1.logmsg("info","stage was successful","stage =>(Echo_script)")
                 }
             }
         }
@@ -72,7 +76,7 @@ pipeline {
                     Check the detals at ${env.BUILD_URL}""",
                     to: "amirmahdifhp@gmail.com"
                 )
-                def log_1 = script_1.logmsg("success","pipeline was successful","stage =>(email_notification)")
+                def log_5 = script_1.logmsg("success","pipeline was successful","stage =>(Email_Notification)")
             }
         } // email
         failure {
@@ -84,7 +88,7 @@ pipeline {
                     Check the details at ${env.BUILD_URL}""",
                     to: "amirmahdifhp@gmail.com"
                 )
-                def log_1 = script_1.logmsg("error","pipeline has failed","stage =>(email_notification)")
+                def log_6 = script_1.logmsg("error","pipeline has failed","stage =>(Email_Notification)")
             }
         } // email
     }
