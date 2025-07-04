@@ -51,7 +51,7 @@ pipeline {
                 echo "My name is ${env.NAME}"
                 echo "My last name is ${env.LAST_NAME}"
                 script {
-                    def log_1 = script_1.logmsg("info","stage was successful","stage =>(load_script)")
+                    def log_1 = script_1.logmsg("info","stage was successful","stage =>(echo_script)")
                 }
             }
         }
