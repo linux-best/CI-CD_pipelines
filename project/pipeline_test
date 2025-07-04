@@ -15,6 +15,7 @@ pipeline {
             steps {
                 git branch: 'main', url: 'https://github.com/linux-best/CI-CD_pipelines/'
                 script {
+                    script_1 = load 'project/project_file.groovy'
                     def log_1 = script_1.logmsg("info","pipeline started","stage =>(checkout_SCM)")
                 }
             }
@@ -22,7 +23,6 @@ pipeline {
         stage ("load script") {
             steps {
                 script {
-                    script_1 = load 'project/project_file.groovy'
                     def log_2 = script_1.logmsg("info","stage was successful","stage =>(Loading_script)")
                 }
             }
