@@ -19,7 +19,7 @@ pipeline {
         stage ("load script") {
             steps {
                 script {
-                    script_1 = load 'project/gro.groovy'
+                    script_1 = load 'project/project_file.groovy'
                 }
             }
         }

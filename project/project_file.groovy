@@ -1,6 +1,6 @@
 def logmsg(x,y,z) {
     sh """
-    sudo python3 project/hello.py ${x} "${y}" "${z}"
+    sudo python3 project/logMSG.py ${x} "${y}" "${z}"
     """
 }
 
