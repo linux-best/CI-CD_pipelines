@@ -11,15 +11,26 @@ logger.add(path ,
 
 a = sys.argv[1]
 
-if a == "info" :
-    with logger.contextualize(status=sys.argv[3]):
-    	logger.info(f"{sys.argv[2]}")
-elif a == "success" :
-    with logger.contextualize(status=sys.argv[3]):
-	    logger.success(f"{sys.argv[2]}")
-elif a == "error" :
-    with logger.contextualize(status=sys.argv[3]):
-	    logger.error(f"{sys.argv[2]}")
+match a :
+    case "info" :
+        with logger.contextualize(log=sys.argv[3]):
+            logger.info(f"{sys.argv[2]}")
+    case "success" :
+        with logger.contextualize(log=sys.argv[3]):
+            logger.success(f"{sys.argv[2]}")
+    case "error" :
+        with logger.contextualize(log=sys.argv[3]):
+    	    logger.error(f"{sys.argv[2]}")
+
+#if a == "info" :
+#    with logger.contextualize(log=sys.argv[3]):
+#    	logger.info(f"{sys.argv[2]}")
+#elif a == "success" :
+#    with logger.contextualize(log=sys.argv[3]):
+#	    logger.success(f"{sys.argv[2]}")
+#elif a == "error" :
+#    with logger.contextualize(log=sys.argv[3]):
+#	    logger.error(f"{sys.argv[2]}")
 
 
 #print(f"Script name: {sys.argv[0]}") # [0] is always the anme of the script
