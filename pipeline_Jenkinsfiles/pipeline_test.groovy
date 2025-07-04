@@ -1,19 +1,49 @@
 pipeline {
     agent any
+    
+    environment {
+        NAME = "amirmahdi"
+        LAST_NAME = 'fathipoor'
+        VALUE = 1
+        result_ISP = sh (script:'ping -c 4 8.8.8.8', returnStdout: true).trim()
+        result_server = sh (script:'ping -c 4 192.168.1.8', returnStdout: true).trim()
+    }
+    
     stages {
-        stage ("Checkout Script") {
+        stage ("Checkout SCM") {
             steps {
-                git branch: 'main', url: 'https://github.com/linux-best/CI-CD_pipelines/'   
+                git branch: 'main', url: 'https://github.com/linux-best/scripts/'
+                
             }
         }
-        stage ("load script") {
+        stage ("Command_Execution") {
             steps {
-                sh """
-                sudo python3 project/log_msg.py "log successed" "2" true
-                """
+                sh "ls -lha"
+            }
+            
+        }
+        stage ("Build") {
+            when {
+                expression {
+                    env.VALUE != 1
+                }
+            }
+            steps {
+                echo "Hi"
+                echo "My name is ${env.NAME}"
+                echo "My last name is ${env.LAST_NAME}"
+            }
+        }
+        
+        stage ("test") {
+            steps {
+                echo "test server : ${env.result_server}"
+                echo "test ISP : ${env.result_ISP}"
             }
         }
     }
+    
+        
     post {
         success {
             echo "Done !"
