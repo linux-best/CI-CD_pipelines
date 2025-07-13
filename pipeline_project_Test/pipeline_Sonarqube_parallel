@@ -1,0 +1,94 @@
+pipeline {
+    agent any 
+
+    environment {
+        SONAR_HOME =  "/opt/sonar-scanner/bin/sonar-scanner"
+    }
+
+    stages {
+        stage('Checkout SCM ==> python') {
+            steps {
+                dir('python') {
+                    echo "stage ==> [Checkingout SCM ......]"
+                    git branch: 'main', url: 'https://github.com/linux-best/python_repo'
+                }
+            }
+        }
+        stage('Checkout_SCM ==> scripts') {
+            steps {
+                dir('scripts') {
+                    echo "stage ==> [Checkingout SCM ......]"
+                    git branch: 'main', url: 'https://github.com/linux-best/scripts'
+                }
+            }
+        }        
+        stage("Code Analysis") {
+            parallel {
+                stage ("Task A ==> Analysis") {
+                    steps {
+                        dir('python') {
+                            withSonarQubeEnv('localSonarqube') {
+                                sh"${env.SONAR_HOME}"
+                            }
+                        }
+                    }
+                }
+                stage ("Task B ==> Analysis") {
+                    steps {
+                        dir('scripts') {
+                            withSonarQubeEnv('localSonarqube') {
+                                sh"${env.SONAR_HOME}"
+                            }
+                        }
+                    }
+                }
+                stage ("Task B ==> Message ") {
+                    steps {
+                        echo "Task B Analysis"
+                    }
+                }
+            }
+        }
+        stage("Quality Gate") {
+            parallel {
+                stage ("Task A ==> Quality Gate") {
+                    steps {
+                        dir('python') {
+                            script {
+                                def value = waitForQualityGate()
+                                if (value.status == "OK") {
+                                    echo "Quality Check :Success:> ${value.status}"
+                                } else {
+                                    error "Quality Check :Failure:> ${value.status}"
+                                }
+                            }
+                        }
+                    }
+                }
+                stage ("Task B ==> Quality Gate") {
+                    steps {
+                        dir('scripts') {
+                            script {
+                                def value = waitForQualityGate()
+                                if (value.status == "OK") {
+                                    echo "Quality Check :Success:> ${value.status}"
+                                } else {
+                                    error "Quality Check :Failure:> ${value.status}"
+                                }
+                            }
+                        }
+                    }
+                }
+                stage ("Task B ==> Message") {
+                    steps {
+                        echo "Task B Quality Gate"
+                    }
+                }
+            }
+        }
+    }
+    post {
+        success {echo "Done !"}
+        failure {echo "Fuck !!"}
+    }
+}

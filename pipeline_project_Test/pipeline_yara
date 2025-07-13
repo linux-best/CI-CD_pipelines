@@ -1,0 +1,57 @@
+pipeline {
+    agent any 
+
+    environment {
+        YARA_RULE = '/var/lib/jenkins/yara_rules/pipeline_rule.yara'
+        STRING_VAR = "" // Condition_Mode_String
+        SONAR_HOME =  "/opt/sonar-scanner/bin/sonar-scanner"
+        ANSIBLE_DEPLOY_YML = "playbook_Deploy.yml"
+        CODE_CHANGE_1 = false
+        CODE_CHANGE_2 = true
+        REPO_SCRIPTS = 'https://github.com/linux-best/scripts/'
+        REPO_ANSIBLE = 'https://github.com/linux-best/ansible/'
+        REPO_PROJECTS_PATH = '/var/lib/jenkins/repo_projects/' 
+        REPO_1 = 'python_repo'
+        REPO_2 = 'scripts'
+    }
+
+    stages {
+        stage('Checkout SCM ==> python') {
+            steps {
+                dir('python_repo') {
+                    echo "stage ==> [Checkingout SCM ......]"
+                    git branch: 'main', url: 'https://github.com/linux-best/python_repo'
+                }
+            }
+        }
+        stage('Checkout_SCM ==> scripts') {
+            steps {
+                dir('scripts') {
+                    echo "stage ==> [Checkingout SCM ......]"
+                    git branch: 'main', url: 'https://github.com/linux-best/scripts'
+                }
+            }
+        }        
+        stage("Yara_Security_Code") {
+            when { 
+                expression {
+                    env.CODE_CHANGE_1 != false || env.CODE_CHANGE_2 != false
+                }
+            }
+            steps {
+                script {
+                    def yara_Scan_1 = sh(script: "yara ${env.YARA_RULE} ${REPO_1} | grep -q .",returnStatus:true)
+                    def yara_Scan_1_output = sh(script: "yara ${env.YARA_RULE} ${REPO_1}",returnStdout:true).trim()
+                    def yara_Scan_2 = sh(script: "yara ${env.YARA_RULE} ${REPO_2} | grep -q .",returnStatus:true)
+                    def yara_Scan_2_output = sh(script: "yara ${env.YARA_RULE} ${REPO_2}",returnStdout:true).trim()
+                    if (yara_Scan_1 == 1 && yara_Scan_2 == 1 ) {
+                        echo "No Malicious File Found !"
+                    } else {
+                        echo "Malicious Files ==> ${REPO_1}:${yara_Scan_1_output} | ${REPO_2}:${yara_Scan_2_output}"
+                        error("Malicious File Found !! status:=> ${REPO_1}:${yara_Scan_1} | ${REPO_2}:${yara_Scan_2} ")
+                    }
+                }
+            }
+        }
+    }
+}

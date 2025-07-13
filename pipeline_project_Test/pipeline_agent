@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+
+    environment {
+        YARA_RULE = '/var/lib/jenkins/yara_rules/pipeline_rule.yara'
+        STRING_VAR = "" // Condition_Mode_String
+        SONAR_HOME =  "/opt/sonar-scanner/bin/sonar-scanner"
+        ANSIBLE_DEPLOY_YML = 'play.yml'
+        CODE_CHANGE_1 = false
+        CODE_CHANGE_2 = false
+        REPO_SCRIPTS = 'https://github.com/linux-best/scripts/'
+        REPO_ANSIBLE = 'https://github.com/linux-best/ansible/'
+        REPO_PROJECTS_PATH = '/var/lib/jenkins/repo_projects/'
+        REPO_1 = 'ansible'
+        REPO_2 = 'scripts'
+    }
+
+    stages {
+        stage("Checkout_SCM ==> ansible") {
+            steps {
+                echo "stage ==> [SCM Versioning ...... ansible]"
+                dir("${env.REPO_1}") {
+                    git branch: "main" , url: "${env.REPO_ANSIBLE}"
+                }
+            }
+        }
+        stage("Checkout_SCM ==> scripts") {
+            steps {
+                echo "stage ==> [SCM Versioning ...... scripts]"
+                dir("${env.REPO_2}") {
+                    git branch: "main" , url: "${env.REPO_SCRIPTS}"
+                }
+            }
+        }
+        stage ("Build") {
+            steps {
+                echo "Building stage ....."
+                dir("${env.REPO_2}") {
+                   // sh "bash update.sh"
+                    sh "pip install -r packages/requierment.txt"
+                    sh "bash requierment_linux.sh"
+                }
+            }
+        }
+        stage('agent') {
+            agent { 
+                label 'slave' 
+            }
+            steps {
+                sh "ls -l"
+            }
+        }
+    }
+}

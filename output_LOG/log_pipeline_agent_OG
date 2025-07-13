@@ -1,0 +1,1866 @@
+Started by user javande
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/pipeline_test
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout_SCM ==> ansible)
+[Pipeline] echo
+stage ==> [SCM Versioning ...... ansible]
+[Pipeline] dir
+Running in /var/lib/jenkins/workspace/pipeline_test/ansible
+[Pipeline] {
+[Pipeline] git
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/pipeline_test/ansible/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/linux-best/ansible/ # timeout=10
+Fetching upstream changes from https://github.com/linux-best/ansible/
+ > git --version # timeout=10
+ > git --version # 'git version 2.34.1'
+ > git fetch --tags --force --progress -- https://github.com/linux-best/ansible/ +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 9e674dea0a8bd3ad96ef226005559348a3ba0b7a (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 9e674dea0a8bd3ad96ef226005559348a3ba0b7a # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D main # timeout=10
+ > git checkout -b main 9e674dea0a8bd3ad96ef226005559348a3ba0b7a # timeout=10
+Commit message: "Update ,sonar-project.properties"
+ > git rev-list --no-walk 9e674dea0a8bd3ad96ef226005559348a3ba0b7a # timeout=10
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Checkout_SCM ==> scripts)
+[Pipeline] echo
+stage ==> [SCM Versioning ...... scripts]
+[Pipeline] dir
+Running in /var/lib/jenkins/workspace/pipeline_test/scripts
+[Pipeline] {
+[Pipeline] git
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/pipeline_test/scripts/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/linux-best/scripts/ # timeout=10
+Fetching upstream changes from https://github.com/linux-best/scripts/
+ > git --version # timeout=10
+ > git --version # 'git version 2.34.1'
+ > git fetch --tags --force --progress -- https://github.com/linux-best/scripts/ +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision f00b018a4f017172ac343a5dd4eb419c7944117d (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f f00b018a4f017172ac343a5dd4eb419c7944117d # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D main # timeout=10
+ > git checkout -b main f00b018a4f017172ac343a5dd4eb419c7944117d # timeout=10
+Commit message: "Update requierment_linux.txt"
+ > git rev-list --no-walk f00b018a4f017172ac343a5dd4eb419c7944117d # timeout=10
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] echo
+Building stage .....
+[Pipeline] dir
+Running in /var/lib/jenkins/workspace/pipeline_test/scripts
+[Pipeline] {
+[Pipeline] sh
++ pip install -r packages/requierment.txt
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: loguru in /usr/lib/python3/dist-packages (from -r packages/requierment.txt (line 1)) (0.6.0)
+[Pipeline] sh
++ bash requierment_linux.sh
+package available  ==> apt apt 2.4.13 (amd64)
+Complete 1/5 Packages
+package available  ==> ansible ansible 2.10.8
+  config file = None
+  configured module search path = ['/var/lib/jenkins/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3/dist-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 3.10.12 (main, Feb  4 2025, 14:57:36) [GCC 11.4.0]
+Complete 2/5 Packages
+package available  ==> git git version 2.34.1
+Complete 3/5 Packages
+package available  ==> yara 4.1.3
+Complete 4/5 Packages
+package available  ==> python3 Python 3.10.12
+Complete 5/5 Packages
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Git_Code_Check)
+[Pipeline] parallel
+[Pipeline] { (Branch: Task A ==> Deploy_Repo)
+[Pipeline] { (Branch: Task A ==> Build/Test_Repo)
+[Pipeline] stage
+[Pipeline] { (Task A ==> Deploy_Repo)
+[Pipeline] stage
+[Pipeline] { (Task A ==> Build/Test_Repo)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
+[Pipeline] sh
++ cd /var/lib/jenkins/repo_projects/ansible
++ git diff
++ git fetch
++ cd /var/lib/jenkins/repo_projects/scripts
++ git diff
++ git fetch
++ git diff HEAD origin/main
++ ls -l
++ pwd
+[Pipeline] sh
++ cd /var/lib/jenkins/repo_projects/scripts
++ git diff --name-only
+[Pipeline] echo
+[msg] changes detected ==> [  ]
+[Pipeline] echo
+total 40
+-rwxrwxr-x 1 javande javande  325 ژوئن     7 10:53 backup.sh
+-rw-r--r-- 1 javande javande  116 ژوئن     3 16:16 Exit_code_checker.sh
+-rwxrwxr-x 1 javande javande  491 ژوئن     8 09:48 Health_check.py
+-rwxrwxr-x 1 javande javande  329 مئی     27 07:13 log_Msg.py
+drwxrwxr-x 2 javande javande 4096 ژوئن     8 10:02 packages
+drwxrwxr-x 2 javande javande 4096 ژوئن     5 10:28 pipeline_jenkins
+-rw-rw-r-- 1 javande javande   54 ژوئن     6 10:32 README.md
+-rwxrwxr-x 1 javande javande  388 ژوئن     7 10:01 requierment_linux.sh
+-rw-rw-r-- 1 javande javande  164 ژوئن     8 08:58 sonar-project.properties
+-rwxrwxr-x 1 javande javande  267 ژوئن     7 09:51 update.sh
+/var/lib/jenkins/repo_projects/scripts
+
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
++ git diff HEAD origin
++ ls -l
++ pwd
+[Pipeline] sh
++ cd /var/lib/jenkins/repo_projects/ansible
++ git diff --name-only
+[Pipeline] echo
+[msg] changes detected ==> [  ]
+[Pipeline] echo
+total 44
+-rwxrwxr-x 1 javande javande   81 مئی     17 12:20 ansible.cfg
+-rw-r--r-- 1 root    root     116 ژوئن     3 16:15 Exit_code_checker.sh
+drwxrwxr-x 2 javande javande 4096 ژوئن     7 08:15 host_vars
+-rwxrwxr-x 1 javande javande  121 ژوئن     7 08:15 inventory
+-rwxrwxr-x 1 javande javande  329 ژوئن     7 07:40 log_Msg.py
+-rwxrwxr-x 1 javande javande  519 مئی     17 12:20 playbook_roles.yml
+drwxrwxr-x 2 javande javande 4096 ژوئن     7 12:08 playbooks
+-rw-rw-r-- 1 javande javande   34 ژوئن     5 11:57 README.md
+drwxrwxr-x 5 javande javande 4096 مئی     17 12:20 roles
+-rwxrwxr-x 1 javande javande  250 ژوئن     7 10:33 script
+-rw-rw-r-- 1 javande javande  162 ژوئن     7 10:33 sonar-project.properties
+/var/lib/jenkins/repo_projects/ansible
+
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Yara_Security_Code)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ yara /var/lib/jenkins/yara_rules/pipeline_rule.yara ansible
++ grep -q .
+[Pipeline] sh
++ yara /var/lib/jenkins/yara_rules/pipeline_rule.yara ansible
+[Pipeline] sh
++ yara /var/lib/jenkins/yara_rules/pipeline_rule.yara scripts
++ grep -q .
+[Pipeline] sh
++ yara /var/lib/jenkins/yara_rules/pipeline_rule.yara scripts
+[Pipeline] echo
+No Malicious File Found !
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Code Analysis)
+[Pipeline] parallel
+[Pipeline] { (Branch: Task A ==> Analysis)
+[Pipeline] { (Branch: Task B ==> Analysis)
+[Pipeline] { (Branch: Task B ==> Message )
+[Pipeline] stage
+[Pipeline] { (Task A ==> Analysis)
+[Pipeline] stage
+[Pipeline] { (Task B ==> Analysis)
+[Pipeline] stage
+[Pipeline] { (Task B ==> Message )
+[Pipeline] dir
+Running in /var/lib/jenkins/workspace/pipeline_test/ansible
+[Pipeline] {
+[Pipeline] dir
+Running in /var/lib/jenkins/workspace/pipeline_test/scripts
+[Pipeline] {
+[Pipeline] echo
+Task B Analysis Finished !
+[Pipeline] }
+[Pipeline] withSonarQubeEnv
+Injecting SonarQube environment variables using the configuration: localSonarqube
+[Pipeline] withSonarQubeEnv
+Injecting SonarQube environment variables using the configuration: localSonarqube
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] {
+[Pipeline] {
+[Pipeline] sh
+[Pipeline] sh
++ /opt/sonar-scanner/bin/sonar-scanner
++ /opt/sonar-scanner/bin/sonar-scanner
+INFO: Scanner configuration file: /opt/sonar-scanner/conf/sonar-scanner.properties
+INFO: Project root configuration file: /var/lib/jenkins/workspace/pipeline_test/ansible/sonar-project.properties
+INFO: Scanner configuration file: /opt/sonar-scanner/conf/sonar-scanner.properties
+INFO: Project root configuration file: /var/lib/jenkins/workspace/pipeline_test/scripts/sonar-project.properties
+INFO: SonarScanner 5.0.1.3006
+INFO: Java 17.0.7 Eclipse Adoptium (64-bit)
+INFO: Linux 6.8.0-60-generic amd64
+INFO: SonarScanner 5.0.1.3006
+INFO: Java 17.0.7 Eclipse Adoptium (64-bit)
+INFO: Linux 6.8.0-60-generic amd64
+INFO: User cache: /var/lib/jenkins/.sonar/cache
+INFO: User cache: /var/lib/jenkins/.sonar/cache
+INFO: Analyzing on SonarQube server 25.5.0.107428
+INFO: Default locale: "en_US", source code encoding: "UTF-8"
+INFO: Analyzing on SonarQube server 25.5.0.107428
+INFO: Default locale: "en_US", source code encoding: "UTF-8"
+INFO: Load global settings
+INFO: Load global settings (done) | time=436ms
+INFO: Server id: 4F833BF3-AZcHMU_K4Eg85a0xVxSP
+INFO: Loading required plugins
+INFO: Load plugins index
+INFO: Load plugins index (done) | time=120ms
+INFO: Load/download plugins
+INFO: Load global settings
+INFO: Load global settings (done) | time=368ms
+INFO: Server id: 4F833BF3-AZcHMU_K4Eg85a0xVxSP
+INFO: Loading required plugins
+INFO: Load plugins index
+INFO: Load plugins index (done) | time=75ms
+INFO: Load/download plugins
+INFO: Load/download plugins (done) | time=312ms
+INFO: Load/download plugins (done) | time=313ms
+INFO: Process project properties
+INFO: Process project properties (done) | time=128ms
+INFO: Project key: my_scripts_project
+INFO: Base dir: /var/lib/jenkins/workspace/pipeline_test/scripts
+INFO: Working dir: /var/lib/jenkins/workspace/pipeline_test/scripts/.scannerwork
+INFO: Load project settings for component key: 'my_scripts_project'
+INFO: Load project settings for component key: 'my_scripts_project' (done) | time=192ms
+INFO: Process project properties
+INFO: Process project properties (done) | time=117ms
+INFO: Project key: my_project_python
+INFO: Base dir: /var/lib/jenkins/workspace/pipeline_test/ansible
+INFO: Working dir: /var/lib/jenkins/workspace/pipeline_test/ansible/.scannerwork
+INFO: Load project settings for component key: 'my_project_python'
+INFO: Load project settings for component key: 'my_project_python' (done) | time=123ms
+INFO: Load quality profiles
+INFO: Load quality profiles
+INFO: Load quality profiles (done) | time=291ms
+INFO: Auto-configuring with CI 'Jenkins'
+INFO: Load quality profiles (done) | time=322ms
+INFO: Auto-configuring with CI 'Jenkins'
+INFO: Load active rules
+INFO: Load active rules
+INFO: Load active rules (done) | time=2497ms
+INFO: Load analysis cache
+INFO: Load analysis cache (1.4 kB) | time=159ms
+INFO: Preprocessing files...
+INFO: Load active rules (done) | time=2766ms
+INFO: Load analysis cache
+INFO: Load analysis cache (647 bytes) | time=153ms
+INFO: Preprocessing files...
+INFO: 1 language detected in 12 preprocessed files
+INFO: 0 files ignored because of scm ignore settings
+INFO: Loading plugins for detected languages
+INFO: Load/download plugins
+INFO: Load/download plugins (done) | time=87ms
+INFO: 2 languages detected in 26 preprocessed files
+INFO: 0 files ignored because of scm ignore settings
+INFO: Loading plugins for detected languages
+INFO: Load/download plugins
+INFO: Load/download plugins (done) | time=58ms
+INFO: Load project repositories
+INFO: Load project repositories (done) | time=799ms
+INFO: Indexing files...
+INFO: Project configuration:
+INFO: Load project repositories
+INFO: 12 files indexed
+INFO: Quality profile for py: Sonar way
+INFO: ------------- Run sensors on module my scripts project
+INFO: Load metrics repository
+INFO: Load metrics repository (done) | time=56ms
+INFO: Load project repositories (done) | time=864ms
+INFO: Indexing files...
+INFO: Project configuration:
+INFO: 26 files indexed
+INFO: Quality profile for py: Sonar way
+INFO: Quality profile for yaml: Sonar way
+INFO: ------------- Run sensors on module my project python
+INFO: Load metrics repository
+INFO: Load metrics repository (done) | time=137ms
+INFO: Sensor JaCoCo XML Report Importer [jacoco]
+INFO: 'sonar.coverage.jacoco.xmlReportPaths' is not defined. Using default locations: target/site/jacoco/jacoco.xml,target/site/jacoco-it/jacoco.xml,build/reports/jacoco/test/jacocoTestReport.xml
+INFO: No report imported, no coverage information will be imported by JaCoCo XML Report Importer
+INFO: Sensor JaCoCo XML Report Importer [jacoco] (done) | time=7ms
+INFO: Sensor Java Config Sensor [iac]
+INFO: 0 source files to be analyzed
+INFO: 0/0 source files have been analyzed
+INFO: Sensor Java Config Sensor [iac] (done) | time=237ms
+INFO: Sensor Python Sensor [python]
+INFO: Starting global symbols computation
+INFO: 2 source files to be analyzed
+INFO: Sensor JaCoCo XML Report Importer [jacoco]
+INFO: 'sonar.coverage.jacoco.xmlReportPaths' is not defined. Using default locations: target/site/jacoco/jacoco.xml,target/site/jacoco-it/jacoco.xml,build/reports/jacoco/test/jacocoTestReport.xml
+INFO: No report imported, no coverage information will be imported by JaCoCo XML Report Importer
+INFO: Sensor JaCoCo XML Report Importer [jacoco] (done) | time=15ms
+INFO: Sensor IaC CloudFormation Sensor [iac]
+INFO: 0 source files to be analyzed
+INFO: 0/0 source files have been analyzed
+INFO: Sensor IaC CloudFormation Sensor [iac] (done) | time=461ms
+INFO: Sensor IaC Kubernetes Sensor [iac]
+INFO: 0 source files to be parsed
+INFO: 0/0 source files have been parsed
+INFO: 0 source files to be analyzed
+INFO: 0/0 source files have been analyzed
+INFO: 0 source files to be checked
+INFO: 0/0 source files have been checked
+INFO: Sensor IaC Kubernetes Sensor [iac] (done) | time=650ms
+INFO: Sensor Java Config Sensor [iac]
+INFO: 0 source files to be analyzed
+INFO: 0/0 source files have been analyzed
+INFO: Sensor Java Config Sensor [iac] (done) | time=83ms
+INFO: Sensor Python Sensor [python]
+INFO: Starting global symbols computation
+INFO: 1 source file to be analyzed
+INFO: 2/2 source files have been analyzed
+INFO: Starting rules execution
+INFO: 2 source files to be analyzed
+INFO: 1/1 source file has been analyzed
+INFO: Starting rules execution
+INFO: 1 source file to be analyzed
+INFO: 2/2 source files have been analyzed
+INFO: The Python analyzer was able to leverage cached data from previous analyses for 0 out of 2 files. These files were not parsed.
+INFO: Sensor Python Sensor [python] (done) | time=10430ms
+INFO: Sensor Cobertura Sensor for Python coverage [python]
+INFO: Sensor Cobertura Sensor for Python coverage [python] (done) | time=61ms
+INFO: Sensor PythonXUnitSensor [python]
+INFO: Sensor PythonXUnitSensor [python] (done) | time=9ms
+INFO: Sensor Python Dependency Sensor [python]
+INFO: Sensor Python Dependency Sensor [python] (done) | time=25ms
+INFO: Sensor IaC Docker Sensor [iac]
+INFO: 0 source files to be analyzed
+INFO: 0/0 source files have been analyzed
+INFO: Sensor IaC Docker Sensor [iac] (done) | time=537ms
+INFO: Sensor TextAndSecretsSensor [text]
+INFO: Available processors: 2
+INFO: Using 2 threads for analysis.
+INFO: 1/1 source file has been analyzed
+INFO: The Python analyzer was able to leverage cached data from previous analyses for 0 out of 1 files. These files were not parsed.
+INFO: Sensor Python Sensor [python] (done) | time=8557ms
+INFO: Sensor Cobertura Sensor for Python coverage [python]
+INFO: Sensor Cobertura Sensor for Python coverage [python] (done) | time=116ms
+INFO: Sensor PythonXUnitSensor [python]
+INFO: Sensor PythonXUnitSensor [python] (done) | time=19ms
+INFO: Sensor Python Dependency Sensor [python]
+INFO: Sensor Python Dependency Sensor [python] (done) | time=20ms
+INFO: Sensor JavaScript inside YAML analysis [javascript]
+INFO: No input files found for analysis
+INFO: Hit the cache for 0 out of 0
+INFO: Miss the cache for 0 out of 0
+INFO: Sensor JavaScript inside YAML analysis [javascript] (done) | time=135ms
+INFO: Sensor CSS Rules [javascript]
+INFO: No CSS, PHP, HTML or VueJS files are found in the project. CSS analysis is skipped.
+INFO: Sensor CSS Rules [javascript] (done) | time=3ms
+INFO: Sensor IaC Docker Sensor [iac]
+INFO: 0 source files to be analyzed
+INFO: 0/0 source files have been analyzed
+INFO: Sensor IaC Docker Sensor [iac] (done) | time=664ms
+INFO: Sensor TextAndSecretsSensor [text]
+INFO: Available processors: 2
+INFO: Using 2 threads for analysis.
+INFO: The property "sonar.tests" is not set. To improve the analysis accuracy, we categorize a file as a test file if any of the following is true:
+  * The filename starts with "test"
+  * The filename contains "test." or "tests."
+  * Any directory in the file path is named: "doc", "docs", "test" or "tests"
+  * Any directory in the file path has a name ending in "test" or "tests"
+
+INFO: Using git CLI to retrieve untracked files
+INFO: Analyzing language associated files and files included via "sonar.text.inclusions" that are tracked by git
+INFO: 7 source files to be analyzed
+INFO: 7/7 source files have been analyzed
+INFO: Sensor TextAndSecretsSensor [text] (done) | time=4503ms
+INFO: ------------- Run sensors on project
+INFO: The property "sonar.tests" is not set. To improve the analysis accuracy, we categorize a file as a test file if any of the following is true:
+  * The filename starts with "test"
+  * The filename contains "test." or "tests."
+  * Any directory in the file path is named: "doc", "docs", "test" or "tests"
+  * Any directory in the file path has a name ending in "test" or "tests"
+
+INFO: Using git CLI to retrieve untracked files
+INFO: Analyzing language associated files and files included via "sonar.text.inclusions" that are tracked by git
+INFO: 19 source files to be analyzed
+INFO: 19/19 source files have been analyzed
+INFO: Sensor TextAndSecretsSensor [text] (done) | time=5781ms
+INFO: ------------- Run sensors on project
+INFO: Sensor Zero Coverage Sensor
+INFO: Sensor Zero Coverage Sensor (done) | time=103ms
+INFO: ------------- Gather SCA dependencies on project
+INFO: Dependency analysis skipped
+INFO: CPD Executor 1 file had no CPD blocks
+INFO: CPD Executor Calculating CPD for 1 file
+INFO: CPD Executor CPD calculation finished (done) | time=43ms
+INFO: SCM revision ID 'f00b018a4f017172ac343a5dd4eb419c7944117d'
+INFO: Analysis report generated in 1205ms, dir size=241.2 kB
+INFO: Analysis report compressed in 264ms, zip size=29.7 kB
+INFO: Sensor Zero Coverage Sensor
+INFO: Sensor Zero Coverage Sensor (done) | time=92ms
+INFO: ------------- Gather SCA dependencies on project
+INFO: Dependency analysis skipped
+INFO: CPD Executor 1 file had no CPD blocks
+INFO: CPD Executor Calculating CPD for 0 files
+INFO: CPD Executor CPD calculation finished (done) | time=22ms
+INFO: Analysis report uploaded in 755ms
+INFO: ANALYSIS SUCCESSFUL, you can find the results at: http://localhost:9000/dashboard?id=my_scripts_project
+INFO: Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
+INFO: More about the report processing at http://localhost:9000/api/ce/task?id=64edd9c7-b8df-4dce-81fe-ec51cef7cdb2
+INFO: SCM revision ID '9e674dea0a8bd3ad96ef226005559348a3ba0b7a'
+INFO: Analysis total time: 36.049 s
+INFO: ------------------------------------------------------------------------
+INFO: EXECUTION SUCCESS
+INFO: ------------------------------------------------------------------------
+INFO: Total time: 48.683s
+INFO: Final Memory: 24M/87M
+INFO: ------------------------------------------------------------------------
+[Pipeline] }
+INFO: Analysis report generated in 1447ms, dir size=238.7 kB
+INFO: Analysis report compressed in 146ms, zip size=26.9 kB
+INFO: Analysis report uploaded in 468ms
+INFO: ANALYSIS SUCCESSFUL, you can find the results at: http://localhost:9000/dashboard?id=my_project_python
+INFO: Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
+INFO: More about the report processing at http://localhost:9000/api/ce/task?id=af3f68be-fca8-46ac-915f-00c859914709
+[Pipeline] // withSonarQubeEnv
+INFO: Analysis total time: 38.357 s
+INFO: ------------------------------------------------------------------------
+INFO: EXECUTION SUCCESS
+INFO: ------------------------------------------------------------------------
+INFO: Total time: 51.016s
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+INFO: Final Memory: 21M/77M
+INFO: ------------------------------------------------------------------------
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] }
+[Pipeline] // withSonarQubeEnv
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Quality Gate)
+[Pipeline] parallel
+[Pipeline] { (Branch: Task A ==> Quality Gate)
+[Pipeline] { (Branch: Task B ==> Quality Gate)
+[Pipeline] { (Branch: Task B ==> Message)
+[Pipeline] stage
+[Pipeline] { (Task A ==> Quality Gate)
+[Pipeline] stage
+[Pipeline] { (Task B ==> Quality Gate)
+[Pipeline] stage
+[Pipeline] { (Task B ==> Message)
+[Pipeline] dir
+Running in /var/lib/jenkins/workspace/pipeline_test/ansible
+[Pipeline] {
+[Pipeline] dir
+Running in /var/lib/jenkins/workspace/pipeline_test/scripts
+[Pipeline] {
+[Pipeline] echo
+Task B Quality Gate Finished !
+[Pipeline] }
+[Pipeline] script
+[Pipeline] {
+[Pipeline] script
+[Pipeline] {
+[Pipeline] waitForQualityGate
+Checking status of SonarQube task 'af3f68be-fca8-46ac-915f-00c859914709' on server 'localSonarqube'
+SonarQube task 'af3f68be-fca8-46ac-915f-00c859914709' status is 'PENDING'
+[Pipeline] waitForQualityGate
+Checking status of SonarQube task 'af3f68be-fca8-46ac-915f-00c859914709' on server 'localSonarqube'
+SonarQube task 'af3f68be-fca8-46ac-915f-00c859914709' status is 'PENDING'
+[Pipeline] // stage
+[Pipeline] }
+SonarQube task 'af3f68be-fca8-46ac-915f-00c859914709' status is 'SUCCESS'
+SonarQube task 'af3f68be-fca8-46ac-915f-00c859914709' completed. Quality gate is 'OK'
+SonarQube task 'af3f68be-fca8-46ac-915f-00c859914709' status is 'SUCCESS'
+SonarQube task 'af3f68be-fca8-46ac-915f-00c859914709' completed. Quality gate is 'OK'
+[Pipeline] echo
+Quality Check :Success:> OK
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] echo
+Quality Check :Success:> OK
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Checkout_SCM_Agent ==> scripts)
+[Pipeline] node
+Running on node_ubuntu in /home/javande/jenkins_slave/workspace/pipeline_test
+[Pipeline] {
+[Pipeline] echo
+stage ==> [SCM Versioning ...... scripts]
+[Pipeline] dir
+Running in /home/javande/jenkins_slave/workspace/pipeline_test/scripts
+[Pipeline] {
+[Pipeline] git
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/linux-best/scripts/
+ > git init /home/javande/jenkins_slave/workspace/pipeline_test/scripts # timeout=10
+Fetching upstream changes from https://github.com/linux-best/scripts/
+ > git --version # timeout=10
+ > git --version # 'git version 2.34.1'
+ > git fetch --tags --force --progress -- https://github.com/linux-best/scripts/ +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+Checking out Revision f00b018a4f017172ac343a5dd4eb419c7944117d (refs/remotes/origin/main)
+Commit message: "Update requierment_linux.txt"
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build_Agent)
+ > git config remote.origin.url https://github.com/linux-best/scripts/ # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f f00b018a4f017172ac343a5dd4eb419c7944117d # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git checkout -b main f00b018a4f017172ac343a5dd4eb419c7944117d # timeout=10
+[Pipeline] node
+Running on node_ubuntu in /home/javande/jenkins_slave/workspace/pipeline_test
+[Pipeline] {
+[Pipeline] echo
+Building stage .....
+[Pipeline] dir
+Running in /home/javande/jenkins_slave/workspace/pipeline_test/scripts
+[Pipeline] {
+[Pipeline] sh
++ bash update.sh
+[Pipeline] sh
++ bash requierment_linux.sh
+package available  ==> apt apt 2.4.11 (amd64)
+Complete 1/5 Packages
+requierment_linux.sh: line 5: ansible: command not found
+package not available ==> ansible 
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following packages were automatically installed and are no longer required:
+  apache2-data apache2-utils
+Use 'sudo apt autoremove' to remove them.
+The following additional packages will be installed:
+  ieee-data python-babel-localedata python3-argcomplete python3-babel
+  python3-distutils python3-dnspython python3-jinja2 python3-jmespath
+  python3-kerberos python3-libcloud python3-netaddr python3-ntlm-auth
+  python3-packaging python3-pycryptodome python3-requests-kerberos
+  python3-requests-ntlm python3-requests-toolbelt python3-selinux
+  python3-simplejson python3-winrm python3-xmltodict
+Suggested packages:
+  cowsay sshpass python3-sniffio python3-trio python-jinja2-doc ipython3
+  python-netaddr-docs
+The following NEW packages will be installed:
+  ansible ieee-data python-babel-localedata python3-argcomplete python3-babel
+  python3-distutils python3-dnspython python3-jinja2 python3-jmespath
+  python3-kerberos python3-libcloud python3-netaddr python3-ntlm-auth
+  python3-packaging python3-pycryptodome python3-requests-kerberos
+  python3-requests-ntlm python3-requests-toolbelt python3-selinux
+  python3-simplejson python3-winrm python3-xmltodict
+0 upgraded, 22 newly installed, 0 to remove and 127 not upgraded.
+Need to get 28.2 MB of archives.
+After this operation, 272 MB of additional disk space will be used.
+Get:1 http://ir.archive.ubuntu.com/ubuntu jammy/main amd64 python-babel-localedata all 2.8.0+dfsg.1-7 [4,982 kB]
+Get:2 http://ir.archive.ubuntu.com/ubuntu jammy/main amd64 python3-babel all 2.8.0+dfsg.1-7 [85.1 kB]
+Get:3 http://ir.archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-jinja2 all 3.0.3-1ubuntu0.4 [108 kB]
+Get:4 http://ir.archive.ubuntu.com/ubuntu jammy/main amd64 python3-packaging all 21.3-1 [30.7 kB]
+Get:5 http://ir.archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-pycryptodome amd64 3.11.0+dfsg1-3ubuntu0.1 [1,029 kB]
+Get:6 http://ir.archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-distutils all 3.10.8-1~22.04 [139 kB]
+Get:7 http://ir.archive.ubuntu.com/ubuntu jammy/main amd64 python3-dnspython all 2.1.0-1ubuntu1 [123 kB]
+Get:8 http://ir.archive.ubuntu.com/ubuntu jammy/main amd64 ieee-data all 20210605.1 [1,887 kB]
+Get:9 http://ir.archive.ubuntu.com/ubuntu jammy/main amd64 python3-netaddr all 0.8.0-2 [309 kB]
+Get:10 http://ir.archive.ubuntu.com/ubuntu jammy/universe amd64 ansible all 2.10.7+merged+base+2.10.8+dfsg-1 [17.5 MB]
+Get:11 http://ir.archive.ubuntu.com/ubuntu jammy/universe amd64 python3-argcomplete all 1.8.1-1.5 [27.2 kB]
+Get:12 http://ir.archive.ubuntu.com/ubuntu jammy/main amd64 python3-jmespath all 0.10.0-1 [21.7 kB]
+Get:13 http://ir.archive.ubuntu.com/ubuntu jammy/universe amd64 python3-kerberos amd64 1.1.14-3.1build5 [23.0 kB]
+Get:14 http://ir.archive.ubuntu.com/ubuntu jammy/main amd64 python3-simplejson amd64 3.17.6-1build1 [54.7 kB]
+Get:15 http://ir.archive.ubuntu.com/ubuntu jammy/universe amd64 python3-libcloud all 3.2.0-2 [1,554 kB]
+Get:16 http://ir.archive.ubuntu.com/ubuntu jammy/universe amd64 python3-ntlm-auth all 1.4.0-1 [20.4 kB]
+Get:17 http://ir.archive.ubuntu.com/ubuntu jammy/universe amd64 python3-requests-kerberos all 0.12.0-2 [11.9 kB]
+Get:18 http://ir.archive.ubuntu.com/ubuntu jammy/universe amd64 python3-requests-ntlm all 1.1.0-1.1 [6,160 B]
+Get:19 http://ir.archive.ubuntu.com/ubuntu jammy/main amd64 python3-requests-toolbelt all 0.9.1-1 [38.0 kB]
+Get:20 http://ir.archive.ubuntu.com/ubuntu jammy/universe amd64 python3-selinux amd64 3.3-1build2 [159 kB]
+Get:21 http://ir.archive.ubuntu.com/ubuntu jammy/universe amd64 python3-xmltodict all 0.12.0-2 [12.6 kB]
+Get:22 http://ir.archive.ubuntu.com/ubuntu jammy/universe amd64 python3-winrm all 0.3.0-2 [21.7 kB]
+Fetched 28.2 MB in 49s (577 kB/s)
+Selecting previously unselected package python-babel-localedata.
+(Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 207536 files and directories currently installed.)
+Preparing to unpack .../00-python-babel-localedata_2.8.0+dfsg.1-7_all.deb ...
+Unpacking python-babel-localedata (2.8.0+dfsg.1-7) ...
+Selecting previously unselected package python3-babel.
+Preparing to unpack .../01-python3-babel_2.8.0+dfsg.1-7_all.deb ...
+Unpacking python3-babel (2.8.0+dfsg.1-7) ...
+Selecting previously unselected package python3-jinja2.
+Preparing to unpack .../02-python3-jinja2_3.0.3-1ubuntu0.4_all.deb ...
+Unpacking python3-jinja2 (3.0.3-1ubuntu0.4) ...
+Selecting previously unselected package python3-packaging.
+Preparing to unpack .../03-python3-packaging_21.3-1_all.deb ...
+Unpacking python3-packaging (21.3-1) ...
+Selecting previously unselected package python3-pycryptodome.
+Preparing to unpack .../04-python3-pycryptodome_3.11.0+dfsg1-3ubuntu0.1_amd64.deb ...
+Unpacking python3-pycryptodome (3.11.0+dfsg1-3ubuntu0.1) ...
+Selecting previously unselected package python3-distutils.
+Preparing to unpack .../05-python3-distutils_3.10.8-1~22.04_all.deb ...
+Unpacking python3-distutils (3.10.8-1~22.04) ...
+Selecting previously unselected package python3-dnspython.
+Preparing to unpack .../06-python3-dnspython_2.1.0-1ubuntu1_all.deb ...
+Unpacking python3-dnspython (2.1.0-1ubuntu1) ...
+Selecting previously unselected package ieee-data.
+Preparing to unpack .../07-ieee-data_20210605.1_all.deb ...
+Unpacking ieee-data (20210605.1) ...
+Selecting previously unselected package python3-netaddr.
+Preparing to unpack .../08-python3-netaddr_0.8.0-2_all.deb ...
+Unpacking python3-netaddr (0.8.0-2) ...
+Selecting previously unselected package ansible.
+Preparing to unpack .../09-ansible_2.10.7+merged+base+2.10.8+dfsg-1_all.deb ...
+Unpacking ansible (2.10.7+merged+base+2.10.8+dfsg-1) ...
+Selecting previously unselected package python3-argcomplete.
+Preparing to unpack .../10-python3-argcomplete_1.8.1-1.5_all.deb ...
+Unpacking python3-argcomplete (1.8.1-1.5) ...
+Selecting previously unselected package python3-jmespath.
+Preparing to unpack .../11-python3-jmespath_0.10.0-1_all.deb ...
+Unpacking python3-jmespath (0.10.0-1) ...
+Selecting previously unselected package python3-kerberos.
+Preparing to unpack .../12-python3-kerberos_1.1.14-3.1build5_amd64.deb ...
+Unpacking python3-kerberos (1.1.14-3.1build5) ...
+Selecting previously unselected package python3-simplejson.
+Preparing to unpack .../13-python3-simplejson_3.17.6-1build1_amd64.deb ...
+Unpacking python3-simplejson (3.17.6-1build1) ...
+Selecting previously unselected package python3-libcloud.
+Preparing to unpack .../14-python3-libcloud_3.2.0-2_all.deb ...
+Unpacking python3-libcloud (3.2.0-2) ...
+Selecting previously unselected package python3-ntlm-auth.
+Preparing to unpack .../15-python3-ntlm-auth_1.4.0-1_all.deb ...
+Unpacking python3-ntlm-auth (1.4.0-1) ...
+Selecting previously unselected package python3-requests-kerberos.
+Preparing to unpack .../16-python3-requests-kerberos_0.12.0-2_all.deb ...
+Unpacking python3-requests-kerberos (0.12.0-2) ...
+Selecting previously unselected package python3-requests-ntlm.
+Preparing to unpack .../17-python3-requests-ntlm_1.1.0-1.1_all.deb ...
+Unpacking python3-requests-ntlm (1.1.0-1.1) ...
+Selecting previously unselected package python3-requests-toolbelt.
+Preparing to unpack .../18-python3-requests-toolbelt_0.9.1-1_all.deb ...
+Unpacking python3-requests-toolbelt (0.9.1-1) ...
+Selecting previously unselected package python3-selinux.
+Preparing to unpack .../19-python3-selinux_3.3-1build2_amd64.deb ...
+Unpacking python3-selinux (3.3-1build2) ...
+Selecting previously unselected package python3-xmltodict.
+Preparing to unpack .../20-python3-xmltodict_0.12.0-2_all.deb ...
+Unpacking python3-xmltodict (0.12.0-2) ...
+Selecting previously unselected package python3-winrm.
+Preparing to unpack .../21-python3-winrm_0.3.0-2_all.deb ...
+Unpacking python3-winrm (0.3.0-2) ...
+Setting up python3-distutils (3.10.8-1~22.04) ...
+Setting up python3-requests-toolbelt (0.9.1-1) ...
+Setting up python3-ntlm-auth (1.4.0-1) ...
+Setting up python3-pycryptodome (3.11.0+dfsg1-3ubuntu0.1) ...
+Setting up python3-kerberos (1.1.14-3.1build5) ...
+Setting up python-babel-localedata (2.8.0+dfsg.1-7) ...
+Setting up python3-simplejson (3.17.6-1build1) ...
+Setting up python3-xmltodict (0.12.0-2) ...
+Setting up python3-packaging (21.3-1) ...
+Setting up python3-jmespath (0.10.0-1) ...
+Setting up python3-requests-kerberos (0.12.0-2) ...
+Setting up ieee-data (20210605.1) ...
+Setting up python3-dnspython (2.1.0-1ubuntu1) ...
+Setting up python3-selinux (3.3-1build2) ...
+Setting up python3-argcomplete (1.8.1-1.5) ...
+Setting up python3-requests-ntlm (1.1.0-1.1) ...
+Setting up python3-babel (2.8.0+dfsg.1-7) ...
+update-alternatives: using /usr/bin/pybabel-python3 to provide /usr/bin/pybabel (pybabel) in auto mode
+Setting up python3-libcloud (3.2.0-2) ...
+Setting up python3-jinja2 (3.0.3-1ubuntu0.4) ...
+Setting up python3-netaddr (0.8.0-2) ...
+Setting up python3-winrm (0.3.0-2) ...
+Setting up ansible (2.10.7+merged+base+2.10.8+dfsg-1) ...
+Processing triggers for man-db (2.10.2-1) ...
+Complete 2/5 Packages
+package available  ==> git git version 2.34.1
+Complete 3/5 Packages
+requierment_linux.sh: line 5: yara: command not found
+package not available ==> yara 
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following packages were automatically installed and are no longer required:
+  apache2-data apache2-utils
+Use 'sudo apt autoremove' to remove them.
+The following additional packages will be installed:
+  libyara8
+The following NEW packages will be installed:
+  libyara8 yara
+0 upgraded, 2 newly installed, 0 to remove and 127 not upgraded.
+Need to get 179 kB of archives.
+After this operation, 499 kB of additional disk space will be used.
+Get:1 http://ir.archive.ubuntu.com/ubuntu jammy/universe amd64 libyara8 amd64 4.1.3-1build1 [157 kB]
+Get:2 http://ir.archive.ubuntu.com/ubuntu jammy/universe amd64 yara amd64 4.1.3-1build1 [22.3 kB]
+Fetched 179 kB in 1s (315 kB/s)
+Selecting previously unselected package libyara8:amd64.
+(Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 246929 files and directories currently installed.)
+Preparing to unpack .../libyara8_4.1.3-1build1_amd64.deb ...
+Unpacking libyara8:amd64 (4.1.3-1build1) ...
+Selecting previously unselected package yara.
+Preparing to unpack .../yara_4.1.3-1build1_amd64.deb ...
+Unpacking yara (4.1.3-1build1) ...
+Setting up libyara8:amd64 (4.1.3-1build1) ...
+Setting up yara (4.1.3-1build1) ...
+Processing triggers for man-db (2.10.2-1) ...
+Processing triggers for libc-bin (2.35-0ubuntu3.10) ...
+Complete 4/5 Packages
+package available  ==> python3 Python 3.10.12
+Complete 5/5 Packages
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test_Agent)
+[Pipeline] node
+Running on node_ubuntu in /home/javande/jenkins_slave/workspace/pipeline_test
+[Pipeline] {
+[Pipeline] dir
+Running in /home/javande/jenkins_slave/workspace/pipeline_test/scripts
+[Pipeline] {
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ python3 Health_check.py
+[Pipeline] echo
+connection to INTERNET ===> SAFE+ via Agent
+[Pipeline] echo
+connection to DEPLOYMENT_SERVER ===> SAFE+ via Agent
+[Pipeline] echo
+connection is OK !
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] parallel
+[Pipeline] { (Branch: Task A)
+[Pipeline] { (Branch: Task B)
+[Pipeline] stage
+[Pipeline] { (Task A)
+[Pipeline] stage
+[Pipeline] { (Task B)
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] dir
+Running in /var/lib/jenkins/workspace/pipeline_test/scripts
+[Pipeline] {
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
+[Pipeline] dir
+Running in /var/lib/jenkins/workspace/pipeline_test/scripts
+[Pipeline] {
+[Pipeline] sh
++ python3 Health_check.py
++ bash backup.sh /var/lib/jenkins/repo_projects/ansible /var/lib/jenkins/backup/ ansible_backup_314
+tar: Removing leading `/' from member names
+/var/lib/jenkins/repo_projects/ansible/
+/var/lib/jenkins/repo_projects/ansible/.git/
+/var/lib/jenkins/repo_projects/ansible/.git/branches/
+/var/lib/jenkins/repo_projects/ansible/.git/info/
+/var/lib/jenkins/repo_projects/ansible/.git/info/exclude
+/var/lib/jenkins/repo_projects/ansible/.git/refs/
+/var/lib/jenkins/repo_projects/ansible/.git/refs/tags/
+/var/lib/jenkins/repo_projects/ansible/.git/refs/remotes/
+/var/lib/jenkins/repo_projects/ansible/.git/refs/remotes/origin/
+/var/lib/jenkins/repo_projects/ansible/.git/refs/remotes/origin/main
+/var/lib/jenkins/repo_projects/ansible/.git/refs/remotes/origin/HEAD
+/var/lib/jenkins/repo_projects/ansible/.git/refs/heads/
+/var/lib/jenkins/repo_projects/ansible/.git/refs/heads/origin/
+/var/lib/jenkins/repo_projects/ansible/.git/refs/heads/origin/main
+/var/lib/jenkins/repo_projects/ansible/.git/refs/heads/main
+/var/lib/jenkins/repo_projects/ansible/.git/logs/
+/var/lib/jenkins/repo_projects/ansible/.git/logs/refs/
+/var/lib/jenkins/repo_projects/ansible/.git/logs/refs/remotes/
+/var/lib/jenkins/repo_projects/ansible/.git/logs/refs/remotes/origin/
+/var/lib/jenkins/repo_projects/ansible/.git/logs/refs/remotes/origin/main
+/var/lib/jenkins/repo_projects/ansible/.git/logs/refs/remotes/origin/HEAD
+/var/lib/jenkins/repo_projects/ansible/.git/logs/refs/heads/
+/var/lib/jenkins/repo_projects/ansible/.git/logs/refs/heads/origin/
+/var/lib/jenkins/repo_projects/ansible/.git/logs/refs/heads/origin/main
+/var/lib/jenkins/repo_projects/ansible/.git/logs/refs/heads/main
+/var/lib/jenkins/repo_projects/ansible/.git/logs/HEAD
+/var/lib/jenkins/repo_projects/ansible/.git/ORIG_HEAD
+/var/lib/jenkins/repo_projects/ansible/.git/HEAD
+/var/lib/jenkins/repo_projects/ansible/.git/hooks/
+/var/lib/jenkins/repo_projects/ansible/.git/hooks/pre-commit.sample
+/var/lib/jenkins/repo_projects/ansible/.git/hooks/pre-rebase.sample
+/var/lib/jenkins/repo_projects/ansible/.git/hooks/update.sample
+/var/lib/jenkins/repo_projects/ansible/.git/hooks/pre-push.sample
+/var/lib/jenkins/repo_projects/ansible/.git/hooks/pre-merge-commit.sample
+/var/lib/jenkins/repo_projects/ansible/.git/hooks/push-to-checkout.sample
+/var/lib/jenkins/repo_projects/ansible/.git/hooks/fsmonitor-watchman.sample
+/var/lib/jenkins/repo_projects/ansible/.git/hooks/pre-receive.sample
+/var/lib/jenkins/repo_projects/ansible/.git/hooks/applypatch-msg.sample
+/var/lib/jenkins/repo_projects/ansible/.git/hooks/post-update.sample
+/var/lib/jenkins/repo_projects/ansible/.git/hooks/commit-msg.sample
+/var/lib/jenkins/repo_projects/ansible/.git/hooks/pre-applypatch.sample
+/var/lib/jenkins/repo_projects/ansible/.git/hooks/prepare-commit-msg.sample
+/var/lib/jenkins/repo_projects/ansible/.git/index
+/var/lib/jenkins/repo_projects/ansible/.git/COMMIT_EDITMSG
+/var/lib/jenkins/repo_projects/ansible/.git/description
+/var/lib/jenkins/repo_projects/ansible/.git/config
+/var/lib/jenkins/repo_projects/ansible/.git/FETCH_HEAD
+/var/lib/jenkins/repo_projects/ansible/.git/packed-refs
+/var/lib/jenkins/repo_projects/ansible/.git/objects/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/cb/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/cb/feb32364403c578f66706e9596f5049c245cdb
+/var/lib/jenkins/repo_projects/ansible/.git/objects/cb/7ab4e8b1ac12585cee3256deab0c4d85dc9741
+/var/lib/jenkins/repo_projects/ansible/.git/objects/02/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/02/74e2871d6c3dd18c0df746cd08d12a838f3a37
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f0/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f0/b6915679b733af4bd571846984ca52ce2775bf
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f0/eed6829bbebbc51358e7866dcfce5321e66f62
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f0/d45c134733dcefd437d4fa6594b09fcd7c6d4e
+/var/lib/jenkins/repo_projects/ansible/.git/objects/73/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/73/ed92564199d188ae39550a2cab394b3a68f399
+/var/lib/jenkins/repo_projects/ansible/.git/objects/73/fe363004fbc9f52cc7a011968b261ad891457e
+/var/lib/jenkins/repo_projects/ansible/.git/objects/90/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/90/7ae5ce2e3c8f93c4ab056076b3d199f1fad5b1
+/var/lib/jenkins/repo_projects/ansible/.git/objects/42/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/42/4dd338ea6a4d611b90658d75ff3be964ca9a98
+/var/lib/jenkins/repo_projects/ansible/.git/objects/42/32cca5992b9baabe93a1be30dced579abc6aef
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d3/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d3/6c2dac57282d102433bd86bc03e86ce4ec5609
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d3/8cf4eaacbd84084d96f92c98148fb875cca2f3
+/var/lib/jenkins/repo_projects/ansible/.git/objects/da/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/da/3626f2ce70c6ff750116d858ea54cb0d1f729b
+/var/lib/jenkins/repo_projects/ansible/.git/objects/da/4d682cb90968db80e3bc7a7ae392a605e463eb
+/var/lib/jenkins/repo_projects/ansible/.git/objects/da/6858e2299a29845b8157b9756eae2f01633c8d
+/var/lib/jenkins/repo_projects/ansible/.git/objects/da/90950d2661ee6f19d6cd56e01ba3be7e7b1c5c
+/var/lib/jenkins/repo_projects/ansible/.git/objects/da/7356c3b5be98fc10b46739c48e6963d95f5515
+/var/lib/jenkins/repo_projects/ansible/.git/objects/20/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/20/1044aa60e9065f94bda2d0f31e11577324a142
+/var/lib/jenkins/repo_projects/ansible/.git/objects/20/edb1fad994acf2750beed401b6211d6658a39e
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ab/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ab/d9940167211d4de283116ea1c9a30fac383600
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ab/db8cebeacff1f1ed3967d7a8f33328b8777aff
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ab/22c2048d2683788f8686d1214510c0a35df0ea
+/var/lib/jenkins/repo_projects/ansible/.git/objects/81/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/81/e462849c521101eea155228c487e2962d4cabb
+/var/lib/jenkins/repo_projects/ansible/.git/objects/9c/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/9c/670a3b4f8c89aee82c77698a0e30f66f50919c
+/var/lib/jenkins/repo_projects/ansible/.git/objects/9c/dd9049ce999619f9fa72c5d6d6b960a66607a7
+/var/lib/jenkins/repo_projects/ansible/.git/objects/info/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/22/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/22/74066e108262995647bde2b8d60bf37ba94170
+/var/lib/jenkins/repo_projects/ansible/.git/objects/22/565633dff01c79f521eeafc35f3cfffd2bcd9d
+/var/lib/jenkins/repo_projects/ansible/.git/objects/3d/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/3d/0b64865b128191c2bb104dd0fd782f9519d25a
+/var/lib/jenkins/repo_projects/ansible/.git/objects/77/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/77/c67a1023ad2464cc6bb5cc96069c4776b1d57d
+/var/lib/jenkins/repo_projects/ansible/.git/objects/4b/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/4b/98cdfcda0d55d38b5bb5027f05771197037eec
+/var/lib/jenkins/repo_projects/ansible/.git/objects/1b/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/1b/d3472a49cd8cd39e4d29681a84cb1c2960a328
+/var/lib/jenkins/repo_projects/ansible/.git/objects/0e/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/0e/89cb46cfcf4eceab0f6559eed235d957d37deb
+/var/lib/jenkins/repo_projects/ansible/.git/objects/0e/06d09b63dae4e40e8f961aec8120e5adc14789
+/var/lib/jenkins/repo_projects/ansible/.git/objects/35/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/35/f594e4bdc8f5c7756dfa5f45f587cf0b93f0a1
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b1/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b1/b59e720c480136d014df01bde19200eafd757f
+/var/lib/jenkins/repo_projects/ansible/.git/objects/bf/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/bf/049f71770b27efb3fdad7bbe2d46ea15ddc42c
+/var/lib/jenkins/repo_projects/ansible/.git/objects/bf/aaead7289cccc355adb5ca4df7452881a6bd45
+/var/lib/jenkins/repo_projects/ansible/.git/objects/pack/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/pack/pack-49ae46064cc34e10c4f35b49512f7732f13753f1.pack
+/var/lib/jenkins/repo_projects/ansible/.git/objects/pack/pack-49ae46064cc34e10c4f35b49512f7732f13753f1.idx
+/var/lib/jenkins/repo_projects/ansible/.git/objects/93/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/93/56c4e18fc92e16d14e97acdcf9dca55d07a501
+/var/lib/jenkins/repo_projects/ansible/.git/objects/93/9285c5b62149c178c4636e7c0d9afd6dd7db27
+/var/lib/jenkins/repo_projects/ansible/.git/objects/98/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/98/a0e2c5d71c19245c53c8cdd5dcf3cd3513e864
+/var/lib/jenkins/repo_projects/ansible/.git/objects/9e/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/9e/e9c9316fcf7cd56c481829a7f96c3aef874930
+/var/lib/jenkins/repo_projects/ansible/.git/objects/9e/674dea0a8bd3ad96ef226005559348a3ba0b7a
+/var/lib/jenkins/repo_projects/ansible/.git/objects/e7/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/e7/60d012eeef82343839c3cdf5dd2eced40d912d
+/var/lib/jenkins/repo_projects/ansible/.git/objects/43/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/43/ff5c16237084a847c84bc1df8fa6742d8743de
+/var/lib/jenkins/repo_projects/ansible/.git/objects/30/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/30/06e96e12ee7fbad0bad1310d1aa973bcc1a7f2
+/var/lib/jenkins/repo_projects/ansible/.git/objects/fa/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/fa/a900521b30d69af31beeec688eb71ed44d8cc9
+/var/lib/jenkins/repo_projects/ansible/.git/objects/fa/3e2e8a79d629717f64aed3d4bd624cfd6945ea
+/var/lib/jenkins/repo_projects/ansible/.git/objects/19/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/19/6863bdeca7672aa47104f3ffa2bea3ffa2cd8b
+/var/lib/jenkins/repo_projects/ansible/.git/objects/19/7e1943e4b351d2bdc10b50d0d91e8c073b5aba
+/var/lib/jenkins/repo_projects/ansible/.git/objects/59/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/59/85eea38c479651849cee0b1654921f330a191b
+/var/lib/jenkins/repo_projects/ansible/.git/objects/10/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/10/6c68ec072e483e5ae1533d1d2cb4bf557630e6
+/var/lib/jenkins/repo_projects/ansible/.git/objects/95/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/95/814b1e19e8d0a53f3a2028fc3a85afd5d7759c
+/var/lib/jenkins/repo_projects/ansible/.git/objects/95/b7a33d557e1bb49d3c00016b558b40175dea2a
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f2/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f2/6f73c4df95e603914eaf8876c262f5d9a3c630
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b0/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b0/a8f156dc4a70100f8825abeb48e1eaea59787b
+/var/lib/jenkins/repo_projects/ansible/.git/objects/48/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/48/17bd4e30f79a4d98ec40f7ba1f2f9a097d6f3e
+/var/lib/jenkins/repo_projects/ansible/.git/objects/fb/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/fb/db63958d5555ed284ee3ccc7ef9360dd66cffb
+/var/lib/jenkins/repo_projects/ansible/.git/objects/fb/93961879828d7c4eaeb89e7a920b38d9d47324
+/var/lib/jenkins/repo_projects/ansible/.git/objects/57/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/57/e9be0f4480ccd9934a191375b02c13a3d704e6
+/var/lib/jenkins/repo_projects/ansible/.git/objects/57/cabbb6fc378d452acc5155d5415e015d68521f
+/var/lib/jenkins/repo_projects/ansible/.git/objects/57/603b81968b04c661ff9a6c28d5cf012bdc1bca
+/var/lib/jenkins/repo_projects/ansible/.git/objects/57/430b88e14f520aa5256279e5df2045c4b0e9e5
+/var/lib/jenkins/repo_projects/ansible/.git/objects/57/32f2e87f64500baf3e86e80d74de2c8c7b4d68
+/var/lib/jenkins/repo_projects/ansible/.git/objects/21/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/21/ca147769647bffe5147326a41b3e3290808da6
+/var/lib/jenkins/repo_projects/ansible/.git/objects/21/da4e5106653fc368bd27cb14bd82def8a3d9cf
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d6/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d6/53b8915c95b026f6a0ebba312106fb58fa95b7
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d6/e48b7021793bffe84b9e02cf93fbed6ab51ee6
+/var/lib/jenkins/repo_projects/ansible/.git/objects/bc/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/bc/22ea93d6258d40c298e7b8d080e9654d876df6
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b7/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b7/8dc95b7c82ff09e2204f1150d104cf6c3e30b4
+/var/lib/jenkins/repo_projects/ansible/.git/objects/3b/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/3b/e7229ffdba0c2adfc97ab46215bedcbfff34c0
+/var/lib/jenkins/repo_projects/ansible/.git/objects/3b/bda75b7b30a4d1b799570d99d7cc3f147ef52d
+/var/lib/jenkins/repo_projects/ansible/.git/objects/1a/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/1a/c2a8aae023aa682a4d6459aec110124bf04a37
+/var/lib/jenkins/repo_projects/ansible/.git/objects/1a/0ec1c16eb7d5b2ba9770c351628c1345e352bf
+/var/lib/jenkins/repo_projects/ansible/.git/objects/6c/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/6c/e6ae67afa927cbd432582c504fabde9b954e2e
+/var/lib/jenkins/repo_projects/ansible/.git/objects/6c/25b60cc8ff89d0733a405b1c3ed13f28c61da6
+/var/lib/jenkins/repo_projects/ansible/.git/objects/6c/9543115a0b7b9d4a0c3de7ad74486a9ea2e6eb
+/var/lib/jenkins/repo_projects/ansible/.git/objects/8f/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/8f/02ea42b9d95e384b93439444a7564593220378
+/var/lib/jenkins/repo_projects/ansible/.git/objects/64/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/64/bad33dff07863dac94a2c4502321df0a161a90
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b3/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b3/b5bc0df1aa91b8d91d8ae315a0398052031485
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b3/d855b5a6a61b75a25f023e62efe7d47331b3d0
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b3/9538c716a8808f7a155312363f5f8bd578b7ba
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f3/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f3/0bb86cc987cfc3e9d38e3eb1457a96e8b8b84c
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f3/4c69d75d9e4843f1798878547ec8309d1c6020
+/var/lib/jenkins/repo_projects/ansible/.git/objects/c6/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/c6/547f91cb51a288b0049a29c183ce0393c4514d
+/var/lib/jenkins/repo_projects/ansible/.git/objects/aa/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/aa/f37180514df551446220c3b7cf05463ab162de
+/var/lib/jenkins/repo_projects/ansible/.git/objects/aa/f98ebc14819cc50f999e143ecb860095dda3e4
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a9/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a9/879d268cbe0ed03423fbf149bc83354b7528f2
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a9/a7b46ec4a1b769a44110b87c87d76a55d1c7fc
+/var/lib/jenkins/repo_projects/ansible/.git/objects/99/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/99/67b46343f3d4d53d26f459b94e06a97bab57b9
+/var/lib/jenkins/repo_projects/ansible/.git/objects/49/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/49/81218929c41e486e19b4a1bfde007aa0e5b442
+/var/lib/jenkins/repo_projects/ansible/.git/objects/49/fbdad6434c2c9ad8f64293c75a395d0ee977ed
+/var/lib/jenkins/repo_projects/ansible/.git/objects/34/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/34/68acf567bd235b8b01b99cc312e44f075c3784
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a3/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a3/4fe27b0e433c8613059d7f7f6d4c53c67e961f
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a3/412037eea017a27370274f7e572dae094fdcf8
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d8/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d8/160b43cc7c38fc60ecf3bccce9363ccdef1497
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d8/5da0d680a6226442abf22335c66c67890efcc9
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d8/b35edc51134c336c7734f1c581ad443c131edf
+/var/lib/jenkins/repo_projects/ansible/.git/objects/c4/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/c4/60a19f85c9e288e7930c3cfa6ca6f878a8b87b
+/var/lib/jenkins/repo_projects/ansible/.git/objects/32/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/32/81dfe09127701b74e50c187b6083259f9aaa74
+/var/lib/jenkins/repo_projects/ansible/.git/objects/82/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/82/bdf6a8d414c17f298034b14e415d1c8e244dce
+/var/lib/jenkins/repo_projects/ansible/.git/objects/4c/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/4c/432b220b4318f0bacd61bcfb79457652d0d1d6
+/var/lib/jenkins/repo_projects/ansible/.git/objects/1d/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/1d/24c5df6ef97a2bd008693967b0a763ec614a82
+/var/lib/jenkins/repo_projects/ansible/.git/objects/33/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/33/61fc025561894ca95dc3f2e1b0e38b9dd12443
+/var/lib/jenkins/repo_projects/ansible/.git/objects/00/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/00/b55e81a6777e1a65f43e0f467046c17bdf9c8f
+/var/lib/jenkins/repo_projects/ansible/.git/objects/00/d7b7de6bd72cfd2bcc3bcf74d70e0ff7a5eb99
+/var/lib/jenkins/repo_projects/ansible/.git/objects/40/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/40/b552a4a3cc27f0aae4d40e71da5f5c08583890
+/var/lib/jenkins/repo_projects/ansible/.git/objects/40/6ebb71808fa5f977ee811a9d8999028f6e70c3
+/var/lib/jenkins/repo_projects/ansible/.git/objects/13/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/13/0a1265466b9e0ad0510e6003c05f214dda7b90
+/var/lib/jenkins/repo_projects/ansible/.git/objects/05/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/05/3b32ffcfcaee5fe8db8437ebb65c39ba30bba0
+/var/lib/jenkins/repo_projects/ansible/.git/objects/60/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/60/62f30b0ad3ca89dbd163f12a4b5e1b674dfe17
+/var/lib/jenkins/repo_projects/ansible/.git/objects/60/469e6480fb86d28cbe03bfc196358221b3e8b2
+/var/lib/jenkins/repo_projects/ansible/.git/objects/60/b0f910cf1fa33633a1140b15e1e455665bd061
+/var/lib/jenkins/repo_projects/ansible/.git/objects/17/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/17/65aee34db8b940ba507e0fc2dbca7ff43f9880
+/var/lib/jenkins/repo_projects/ansible/.git/objects/17/46e58d77bae75ac70355487f4e66cd7fc8f87c
+/var/lib/jenkins/repo_projects/ansible/.git/objects/17/97cc4602f7ef602d19ab311b804cd41078943f
+/var/lib/jenkins/repo_projects/ansible/.git/objects/0a/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/0a/087a4aab9b961d27df083490382af92ccfd5c9
+/var/lib/jenkins/repo_projects/ansible/.git/objects/0a/ba4f6bd4de3586498dac607c1e8b004ab78eef
+/var/lib/jenkins/repo_projects/ansible/.git/objects/29/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/29/d2d99ae435c1ca8627b12a71f5c1cdc05d0df1
+/var/lib/jenkins/repo_projects/ansible/.git/objects/29/0754a7ed18d233856e351178b0ec4bc9a9a502
+/var/lib/jenkins/repo_projects/ansible/.git/objects/29/5d683e362da9eaf796706693de57b3f37759f0
+/var/lib/jenkins/repo_projects/ansible/.git/objects/fe/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/fe/ddebcaae88fd4b288b91fdcee2b58a564d4d78
+/var/lib/jenkins/repo_projects/ansible/.git/objects/69/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/69/0cc0a1a1df69e1476340158be45e5062aecbf1
+/var/lib/jenkins/repo_projects/ansible/.git/objects/28/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/28/2dfc9fb34ff0079489f96dfa94c89dbc9a7de0
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b5/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b5/31f0044b46ede7354bfe5596629eed14227a4f
+/var/lib/jenkins/repo_projects/ansible/.git/objects/8a/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/8a/44b065853b7afea4fdf779b445d01249104ba2
+/var/lib/jenkins/repo_projects/ansible/.git/objects/8a/89929e365d3b3cc227d88566518bc7f618eace
+/var/lib/jenkins/repo_projects/ansible/.git/objects/c9/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/c9/ac152cdb4237f1b0c6790d4e6d5fe6eedfd718
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b4/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b4/98af7fd0318b50a475bc61d2ef04e62db60e1b
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b4/4d91e9e670aa55d7ce42cee3239c6b2b00258f
+/var/lib/jenkins/repo_projects/ansible/.git/objects/61/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/61/bda9874607f40f274cb9fe3f4d3688385d92c7
+/var/lib/jenkins/repo_projects/ansible/.git/objects/61/3924baca8ca747cbdf63e55fe613b96be9f2dc
+/var/lib/jenkins/repo_projects/ansible/.git/objects/1c/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/1c/f95ef91bafa22f741f135aeadd24b3909250bd
+/var/lib/jenkins/repo_projects/ansible/.git/objects/1c/28c04b96b3afcf234a1693e1c34f643c89709a
+/var/lib/jenkins/repo_projects/ansible/.git/objects/37/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/37/6591ff193389121821476a53e898390f59145b
+/var/lib/jenkins/repo_projects/ansible/.git/objects/2c/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/2c/1c76a47e733eb988fcdb36d436544436d7a5e3
+/var/lib/jenkins/repo_projects/ansible/.git/objects/2c/b6de1d05f41a67d70d9cf262e8b8e7ace20e1a
+/var/lib/jenkins/repo_projects/ansible/.git/objects/fc/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/fc/a473e1c68f9e51a03444f0e2d17be31cde0ce0
+/var/lib/jenkins/repo_projects/ansible/.git/objects/3f/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/3f/714687d9f02eda40d38e099b3a531a2e2c52ed
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d9/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d9/7c35f15456a40df7ae8b71dcc27dded2e09f35
+/var/lib/jenkins/repo_projects/ansible/.git/objects/92/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/92/6782c435927b8e43daaa5c811095babe2429b2
+/var/lib/jenkins/repo_projects/ansible/.git/objects/e9/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/e9/208e9b8f94281d06e1158841a53baa4199733b
+/var/lib/jenkins/repo_projects/ansible/.git/objects/e9/03a1838a66a961f07dec14b08255f5f2d5e09a
+/var/lib/jenkins/repo_projects/ansible/.git/objects/7d/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/7d/2818872228991206a0c000d69d6e5a6e8bf5ae
+/var/lib/jenkins/repo_projects/ansible/.git/objects/7d/577f0a4b872a2d79e1b0c830810ef853755155
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ef/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ef/e497454334324477d6320999d0547f700d5986
+/var/lib/jenkins/repo_projects/ansible/.git/objects/58/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/58/2ce818f0a781f5b74b280668aa8a20ea48c0bc
+/var/lib/jenkins/repo_projects/ansible/.git/objects/41/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/41/f291283909b3d152fae5bcb3f9e00a0f23aea4
+/var/lib/jenkins/repo_projects/ansible/.git/objects/89/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/89/f164112a7b4a080ef8f975957830a6d24dab56
+/var/lib/jenkins/repo_projects/ansible/.git/objects/3c/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/3c/5245348e517b8848825f4278548913b3d7c7c1
+/var/lib/jenkins/repo_projects/ansible/.git/objects/3c/42c5db84ea3c2d485beed0363439e73bcb43a4
+/var/lib/jenkins/repo_projects/ansible/.git/objects/0c/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/0c/11205fc49091f46741bf3bfa5fb915177f5ebd
+/var/lib/jenkins/repo_projects/ansible/.git/objects/31/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/31/869e3fdc67dc2bbbaf9a0724d4f3bf8228c69b
+/var/lib/jenkins/repo_projects/ansible/.git/objects/31/b3e8a81e151085ae3d2acb93a1fab073cf4dd8
+/var/lib/jenkins/repo_projects/ansible/.git/objects/46/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/46/3f351aa539ea2e66cfb48dd5e7893f212399a7
+/var/lib/jenkins/repo_projects/ansible/.git/objects/46/34f52b8184b6e3141601352526385618c89c12
+/var/lib/jenkins/repo_projects/ansible/.git/objects/e8/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/e8/6839405243b1a46221b06f75cbb05fb8753b5a
+/var/lib/jenkins/repo_projects/ansible/.git/objects/63/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/63/429363ed92e6108b0842adb5022328efbf77ff
+/var/lib/jenkins/repo_projects/ansible/.git/objects/63/027817b969d316f97fe6b3a47cb195fae5a468
+/var/lib/jenkins/repo_projects/ansible/.git/objects/6b/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/6b/c0f77c234aad8ac030491cc807bb74748dfd8f
+/var/lib/jenkins/repo_projects/ansible/.git/objects/4a/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/4a/260c207243918e554b267668ff7193f3f7edd4
+/var/lib/jenkins/repo_projects/ansible/.git/objects/4a/49c73be186a16dc43f7e95d68c5b6ec0e7e490
+/var/lib/jenkins/repo_projects/ansible/.git/objects/4a/230f82cd4ba01e06e7a8b4a8b2e75ea01817c7
+/var/lib/jenkins/repo_projects/ansible/.git/objects/bb/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/bb/bac5b5d85c0d11564fe0f32d0b6fc3a2586c0c
+/var/lib/jenkins/repo_projects/ansible/.git/objects/bb/390209eec15dbdb785302d04fa95b79fbe957c
+/var/lib/jenkins/repo_projects/ansible/.git/objects/bb/cabc8504204e7544b013a7b9f3578651548fe6
+/var/lib/jenkins/repo_projects/ansible/.git/objects/bb/29053b1e15d08890c6fd6154349ccc4e440297
+/var/lib/jenkins/repo_projects/ansible/.git/objects/bb/cdcb4b20ed793337f2cdae205ab541579fe961
+/var/lib/jenkins/repo_projects/ansible/.git/objects/c2/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/c2/c6058397fa178021f02ece4ef7e4de41a685f7
+/var/lib/jenkins/repo_projects/ansible/.git/objects/16/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/16/5e7b0b543623bee780b09450cbfa6ac99c324c
+/var/lib/jenkins/repo_projects/ansible/.git/objects/e6/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/e6/4a7461bd1fd8256e045d6fb0d84ad552d370a6
+/var/lib/jenkins/repo_projects/ansible/.git/objects/4f/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/4f/b7f91b626f09f3357d544ec6e54163683dee79
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f5/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f5/5ae54d2853574e945a91cafec7e231872f687b
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f5/7b7eb05b559ef355e67e3e45e420d0cf454df4
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f5/0d1f86705464daa81ecba5048a955d5711f830
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ed/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ed/5a80c5ed555b78bf900f855a8b50a774991d6b
+/var/lib/jenkins/repo_projects/ansible/.git/objects/97/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/97/05d5503ae86bb682a1ea8eea9a36efce7b99ac
+/var/lib/jenkins/repo_projects/ansible/.git/objects/c7/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/c7/2b75ed60c74ba12d97a3974475f14d910bd163
+/var/lib/jenkins/repo_projects/ansible/.git/objects/80/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/80/6b9a278a10a8791c32cbd378601d22bf6c99c0
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f6/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f6/e62f8df1cae2d4e522b846bab76116fdc9f606
+/var/lib/jenkins/repo_projects/ansible/.git/objects/db/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/db/bb89e058ccb057539e9b98a2183e4c6cd7d1a6
+/var/lib/jenkins/repo_projects/ansible/.git/objects/df/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/df/9ebeff213488522de44e3932fbab272e18da48
+/var/lib/jenkins/repo_projects/ansible/.git/objects/df/6f11b077aef4540c6bb918277d5bbffc4d46f9
+/var/lib/jenkins/repo_projects/ansible/.git/objects/55/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/55/3797ce6e7a39ad4dea4e5102d6db5d6f0402aa
+/var/lib/jenkins/repo_projects/ansible/.git/objects/7c/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/7c/b9bac04440529aa273a9494c97c3cb99404886
+/var/lib/jenkins/repo_projects/ansible/.git/objects/66/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/66/0be2d74e889e5e2837dde21cc167cbd6a70f5b
+/var/lib/jenkins/repo_projects/ansible/.git/objects/88/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/88/6b422658f92042c0a0c93978ef5edee3c52dfb
+/var/lib/jenkins/repo_projects/ansible/.git/objects/11/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/11/90b331dbc3b8e039862d7caa4d8e6d3f7355c7
+/var/lib/jenkins/repo_projects/ansible/.git/objects/11/224a6ab628e8b8469752da020fe892f8d7eda3
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ac/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ac/a27c2b9581008c5f7f5d1b7037b1ab3bfd80f5
+/var/lib/jenkins/repo_projects/ansible/.git/objects/2b/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/2b/d8fc24fc645d9b6a1fe64bccc9950a49c7dffb
+/var/lib/jenkins/repo_projects/ansible/.git/objects/9f/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/9f/36032a0fd6c30690585ba35aa10d568a074a2b
+/var/lib/jenkins/repo_projects/ansible/.git/objects/cf/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/cf/c3453f0099421883fb3e629c208b1b11267c0c
+/var/lib/jenkins/repo_projects/ansible/.git/objects/53/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/53/d025f81d74de03210fcf084d8475d61853c9b6
+/var/lib/jenkins/repo_projects/ansible/.git/objects/47/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/47/212d71f69d4a5c326fdf8098a961d56395119a
+/var/lib/jenkins/repo_projects/ansible/.git/objects/9a/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/9a/f058df75f871a9aeb3ff03fb1f4316edf2b4b8
+/var/lib/jenkins/repo_projects/ansible/.git/objects/de/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/de/7fff28f7c94a2837afb1e32621ac8c55088c63
+/var/lib/jenkins/repo_projects/ansible/.git/objects/27/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/27/cb443e272e4530bf5accc9003da98cf138dbcd
+/var/lib/jenkins/repo_projects/ansible/.git/objects/8d/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/8d/7ffbe99677b0c2be16ddcc9bdcd1eba8930cb0
+/var/lib/jenkins/repo_projects/ansible/.git/objects/8d/58aaede2d43a7314c2422f634b1212e1d9448e
+/var/lib/jenkins/repo_projects/ansible/.git/objects/5d/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/5d/93bdb95ef68b743947c77f6d85b01a4d3d53d8
+/var/lib/jenkins/repo_projects/ansible/.git/objects/5d/448915bedc886e85596d9a48f71592be6bee96
+/var/lib/jenkins/repo_projects/ansible/.git/objects/5d/000a8cf305f772e75cc88a1e3394eb20d4470a
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ee/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ee/446d783a1df42e4ac1a56ec55834a2551e0eb5
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ee/f273bdacbd63867770be21b878a74d1d18822f
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ee/53e736d5e713247b5e876c047d2af52f24b297
+/var/lib/jenkins/repo_projects/ansible/.git/objects/5f/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/5f/1465790fc91270269fd96064d9a1a96c60944b
+/var/lib/jenkins/repo_projects/ansible/.git/objects/5f/6d2f331e412e900e1007749e67cbc68dbefc1f
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f4/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f4/5b48254e758e6fc38652aa0161376492f5d1bd
+/var/lib/jenkins/repo_projects/ansible/.git/objects/71/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/71/d1040d4f628e844f99d85276a19056b2a707d7
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a1/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a1/e399d42149703f65a189a64ae7c03d64dd01c0
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a1/27baed1668e9146bc83ad104940704b842f611
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a1/f04b99fc7d4e7ce17e2baca25d8c13cdf3efde
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a1/ec6b2623c1038ea6a66d267ad54dcb12ba861e
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a1/51fbce84bc304d85afd533fc96379c397df804
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f1/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f1/b29f06bb9350683271a42c7e5c0bd0bc7f70f5
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d5/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d5/f88e65e16d2ae1990e30f8d45d167b0d8c4101
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d5/b8fb91ab88953884b6e39ea42c7fce228ca186
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b8/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b8/0505e7584ca6834f21a2fb03e6a98b70842629
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b8/cacc0e2c1ef6f3bb4f23c7aeb0766b9bdc05b5
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ce/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ce/8b1062b3499c193c54defd9615f65672211403
+/var/lib/jenkins/repo_projects/ansible/.git/objects/09/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/09/a5250bf670595d3957499e995fe0546c8e78aa
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b2/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b2/54d397b6e0299646169fa7391b6da28f56c57a
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ea/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ea/c12ace5431ecc69b8f5ddc1f25cdd39fdd1853
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ea/660f42ed9c18e89b4415b2528882b0032a12bc
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ea/bf7dbb3e929ba1d6a3e07c487f776516eb5799
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ea/55ac44297d9406708079352ffe50164dc83296
+/var/lib/jenkins/repo_projects/ansible/.git/objects/cc/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/cc/3224912ad914f1ce083d765f24e0164e785682
+/var/lib/jenkins/repo_projects/ansible/.git/objects/24/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/24/0e784eeb8d51ed1c61d65d8e6b261e6f6db1a3
+/var/lib/jenkins/repo_projects/ansible/.git/objects/24/9f900639f26e149b4506aa852842514fcd9407
+/var/lib/jenkins/repo_projects/ansible/.git/objects/24/4d3e56908070576f0524e20341b2e0e1d8ab4c
+/var/lib/jenkins/repo_projects/ansible/.git/objects/24/ecb5a631ca7cdb86a8e264545ceb6857e795b8
+/var/lib/jenkins/repo_projects/ansible/.git/objects/1f/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/1f/d3da10a9e6548c8c653bd0d0bbad3840adafdb
+/var/lib/jenkins/repo_projects/ansible/.git/objects/1f/f00676e90d56332e8ecfe2baa617ce5475e5a0
+/var/lib/jenkins/repo_projects/ansible/.git/objects/4e/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/4e/2939509bf86652d9dea2982965eadae1808f88
+/var/lib/jenkins/repo_projects/ansible/.git/objects/4e/a9f3bef00b6981a44b2965a5a40671edf46853
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f7/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f7/2a76c5e25bbee751eccebb1632e786fb8a1ac2
+/var/lib/jenkins/repo_projects/ansible/.git/objects/f7/37843130d328c315ed50bd6096928dec0ddf92
+/var/lib/jenkins/repo_projects/ansible/.git/objects/c1/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/c1/737213840506e9aadfb33d3e412397b8249081
+/var/lib/jenkins/repo_projects/ansible/.git/objects/e5/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/e5/5f54f61fcb191ba1be38ec6a6be5500c68ede9
+/var/lib/jenkins/repo_projects/ansible/.git/objects/0b/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/0b/df6effbf26de0171bf43548452479adfcf9fbb
+/var/lib/jenkins/repo_projects/ansible/.git/objects/85/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/85/2023034badd9a893183e50110ae9b52adeced2
+/var/lib/jenkins/repo_projects/ansible/.git/objects/0f/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/0f/e8b489fabd19cdc7eb788967495d7924cfd9e6
+/var/lib/jenkins/repo_projects/ansible/.git/objects/87/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/87/d4754d8e3a0ebb3a3bf4c00d1d3b1650a86e7e
+/var/lib/jenkins/repo_projects/ansible/.git/objects/75/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/75/db4d8f6ce5490aa205b4d3fd287f6598c133a5
+/var/lib/jenkins/repo_projects/ansible/.git/objects/86/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/86/49d5cabea4d280c426ef34aa10938448cca5f4
+/var/lib/jenkins/repo_projects/ansible/.git/objects/8e/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/8e/43772e8bc8dd13011500a160283f7fa1cc69e8
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a4/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a4/21996936186fe86737f410657978e26cdef0a7
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a4/b4fd1d7b3b3c46c08551cc9f4b60cd4c5a7c57
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a4/9e08e96d9ac32196fa09a02979820bb55655be
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b6/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b6/6b8379d6bb857954341f79947d6ddb4096d017
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b9/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b9/baf5368a717c15b217af37bfa14a21ffac53a6
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b9/f08ecb9685f29b4e50ed420ac2461902411671
+/var/lib/jenkins/repo_projects/ansible/.git/objects/b9/ffb94cacddd815898c97a003b3724f0d8e1b33
+/var/lib/jenkins/repo_projects/ansible/.git/objects/2a/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/2a/7846ea9fea68dbae127cbc5d6d79d7c75b7606
+/var/lib/jenkins/repo_projects/ansible/.git/objects/c0/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/c0/ea09e4bcc6bc583b7ddbfde224e6d2239865be
+/var/lib/jenkins/repo_projects/ansible/.git/objects/23/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/23/405fb624b0a2bb1bf29de89e8cd9cf6bb46e7c
+/var/lib/jenkins/repo_projects/ansible/.git/objects/23/b61c6d53d4f57f2090b41dbe2f56d879afd47b
+/var/lib/jenkins/repo_projects/ansible/.git/objects/26/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/26/bfb207b7bbd776f83a020a85bcdf59da5c09c3
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ca/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ca/c704101efb7ce780f1e7dc8655d1c397c49b62
+/var/lib/jenkins/repo_projects/ansible/.git/objects/ca/56751c1ab846709f1c78d954dcaff70395d2bb
+/var/lib/jenkins/repo_projects/ansible/.git/objects/5e/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/5e/344eede59f1b9f69f00de722a84a478825964d
+/var/lib/jenkins/repo_projects/ansible/.git/objects/5e/dc9d1398c53dab1f8d552a0f0bdacde5b2f770
+/var/lib/jenkins/repo_projects/ansible/.git/objects/56/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/56/73c7c5572158c4fa4e594ee53bd36a1ca07d06
+/var/lib/jenkins/repo_projects/ansible/.git/objects/56/1674af50c61388f411dc157671b11d4e0b4852
+/var/lib/jenkins/repo_projects/ansible/.git/objects/56/dd68a397597054a079323291b6c7c67727e197
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a2/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a2/f72d791edf056ec4f61afcb8e26dde8b835f0a
+/var/lib/jenkins/repo_projects/ansible/.git/objects/a2/300be1d2278c3fef2e31eb90ec60890bd94d1f
+/var/lib/jenkins/repo_projects/ansible/.git/objects/62/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/62/fbf49f27099c91781d5ec9d2adaac9a433c8ae
+/var/lib/jenkins/repo_projects/ansible/.git/objects/18/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/18/ee65bb0fde5206125f2e4e3dbfbaefedc09b95
+/var/lib/jenkins/repo_projects/ansible/.git/objects/18/dbe85427943601c97d01cfc9ffc439d3f4261c
+/var/lib/jenkins/repo_projects/ansible/.git/objects/7a/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/7a/41fddbb7b0b277d301ae37f225810026eea63c
+/var/lib/jenkins/repo_projects/ansible/.git/objects/7a/903e59336b34f6f3bdde1fb194410877f24cd7
+/var/lib/jenkins/repo_projects/ansible/.git/objects/12/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/12/4c82d11f0cab08e91b58d8a5a26d72899d7916
+/var/lib/jenkins/repo_projects/ansible/.git/objects/12/4af32338907dac217b70cb4bf02460a978e53d
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d0/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/d0/6b6def2b74a3ed01b538ec235324a4ff9347ab
+/var/lib/jenkins/repo_projects/ansible/.git/objects/8c/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/8c/00ad741a2405f4c8aa0d0e55b0da982b8ef8a5
+/var/lib/jenkins/repo_projects/ansible/.git/objects/8c/b1b3fb9dc267d6dd289537f586497538e56521
+/var/lib/jenkins/repo_projects/ansible/.git/objects/8c/62bb33e7d7456e2906b570ceb5e4262f147180
+/var/lib/jenkins/repo_projects/ansible/.git/objects/04/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/04/f6e0638165604198e949b2eace0e65268562df
+/var/lib/jenkins/repo_projects/ansible/.git/objects/04/47b9dedbbe8ca1a85791418796163a0f18f0ea
+/var/lib/jenkins/repo_projects/ansible/.git/objects/45/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/45/78d1172a4961c69a19a4aeb272b318c2a19b8e
+/var/lib/jenkins/repo_projects/ansible/.git/objects/45/c54ed136f768e9ba2d841ce68d6e74450fd7ec
+/var/lib/jenkins/repo_projects/ansible/.git/objects/dc/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/dc/6184c27d09bdccc9f9c32a05d6ddde47848d12
+/var/lib/jenkins/repo_projects/ansible/.git/objects/44/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/44/78899f6c0c15dee130a7def311c6a5c1c703b8
+/var/lib/jenkins/repo_projects/ansible/.git/objects/44/8a3ade5d0d768b2ed612220e720b1a26ced5c5
+/var/lib/jenkins/repo_projects/ansible/.git/objects/44/6f3f246aa6bd7c0ed070cb919d93cb1f83154a
+/var/lib/jenkins/repo_projects/ansible/.git/objects/72/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/72/6d8db90d84ee3aae8b80c5889d62a2d92944c5
+/var/lib/jenkins/repo_projects/ansible/.git/objects/07/
+/var/lib/jenkins/repo_projects/ansible/.git/objects/07/763dfd736af95e4d1820c637b940369c4969fb
+/var/lib/jenkins/repo_projects/ansible/playbooks/
+/var/lib/jenkins/repo_projects/ansible/playbooks/playbook_ansible.yml
+/var/lib/jenkins/repo_projects/ansible/playbooks/playbook_clamav.yml
+/var/lib/jenkins/repo_projects/ansible/playbooks/site.yml
+/var/lib/jenkins/repo_projects/ansible/playbooks/ansible.cfg
+/var/lib/jenkins/repo_projects/ansible/playbooks/play.yml
+/var/lib/jenkins/repo_projects/ansible/playbooks/playbook_test.yml
+/var/lib/jenkins/repo_projects/ansible/sonar-project.properties
+/var/lib/jenkins/repo_projects/ansible/README.md
+/var/lib/jenkins/repo_projects/ansible/inventory
+/var/lib/jenkins/repo_projects/ansible/log_Msg.py
+/var/lib/jenkins/repo_projects/ansible/playbook_roles.yml
+/var/lib/jenkins/repo_projects/ansible/ansible.cfg
+/var/lib/jenkins/repo_projects/ansible/roles/
+/var/lib/jenkins/repo_projects/ansible/roles/dc_client/
+/var/lib/jenkins/repo_projects/ansible/roles/dc_client/templates/
+/var/lib/jenkins/repo_projects/ansible/roles/dc_client/templates/ssh_config_ubuntu.j2
+/var/lib/jenkins/repo_projects/ansible/roles/dc_client/handlers/
+/var/lib/jenkins/repo_projects/ansible/roles/dc_client/handlers/main.yml
+/var/lib/jenkins/repo_projects/ansible/roles/dc_client/tasks/
+/var/lib/jenkins/repo_projects/ansible/roles/dc_client/tasks/main.yml
+/var/lib/jenkins/repo_projects/ansible/roles/bootstrap/
+/var/lib/jenkins/repo_projects/ansible/roles/bootstrap/files/
+/var/lib/jenkins/repo_projects/ansible/roles/bootstrap/files/sudo_javande
+/var/lib/jenkins/repo_projects/ansible/roles/bootstrap/handlers/
+/var/lib/jenkins/repo_projects/ansible/roles/bootstrap/handlers/main.yml
+/var/lib/jenkins/repo_projects/ansible/roles/bootstrap/tasks/
+/var/lib/jenkins/repo_projects/ansible/roles/bootstrap/tasks/main.yml
+/var/lib/jenkins/repo_projects/ansible/roles/home_client/
+/var/lib/jenkins/repo_projects/ansible/roles/home_client/tasks/
+/var/lib/jenkins/repo_projects/ansible/roles/home_client/tasks/main.yml
+/var/lib/jenkins/repo_projects/ansible/host_vars/
+/var/lib/jenkins/repo_projects/ansible/host_vars/192.168.43.213.yml
+/var/lib/jenkins/repo_projects/ansible/host_vars/192.168.114.131.yml
+/var/lib/jenkins/repo_projects/ansible/host_vars/192.168.1.4.yml
+/var/lib/jenkins/repo_projects/ansible/host_vars/192.168.114.132.yml
+/var/lib/jenkins/repo_projects/ansible/host_vars/192.168.1.7.yml
+/var/lib/jenkins/repo_projects/ansible/Exit_code_checker.sh
+/var/lib/jenkins/repo_projects/ansible/script
+Backup Completed !
+[Pipeline] sh
++ bash backup.sh /var/lib/jenkins/repo_projects/scripts /var/lib/jenkins/backup/ scripts_backup_314
+tar: Removing leading `/' from member names
+/var/lib/jenkins/repo_projects/scripts/
+/var/lib/jenkins/repo_projects/scripts/.git/
+/var/lib/jenkins/repo_projects/scripts/.git/branches/
+/var/lib/jenkins/repo_projects/scripts/.git/info/
+/var/lib/jenkins/repo_projects/scripts/.git/info/exclude
+/var/lib/jenkins/repo_projects/scripts/.git/refs/
+/var/lib/jenkins/repo_projects/scripts/.git/refs/tags/
+/var/lib/jenkins/repo_projects/scripts/.git/refs/remotes/
+/var/lib/jenkins/repo_projects/scripts/.git/refs/remotes/origin/
+/var/lib/jenkins/repo_projects/scripts/.git/refs/remotes/origin/main
+/var/lib/jenkins/repo_projects/scripts/.git/refs/heads/
+/var/lib/jenkins/repo_projects/scripts/.git/refs/heads/main
+/var/lib/jenkins/repo_projects/scripts/.git/logs/
+/var/lib/jenkins/repo_projects/scripts/.git/logs/refs/
+/var/lib/jenkins/repo_projects/scripts/.git/logs/refs/remotes/
+/var/lib/jenkins/repo_projects/scripts/.git/logs/refs/remotes/origin/
+/var/lib/jenkins/repo_projects/scripts/.git/logs/refs/remotes/origin/main
+/var/lib/jenkins/repo_projects/scripts/.git/logs/refs/heads/
+/var/lib/jenkins/repo_projects/scripts/.git/logs/refs/heads/main
+/var/lib/jenkins/repo_projects/scripts/.git/logs/HEAD
+/var/lib/jenkins/repo_projects/scripts/.git/ORIG_HEAD
+/var/lib/jenkins/repo_projects/scripts/.git/HEAD
+/var/lib/jenkins/repo_projects/scripts/.git/hooks/
+/var/lib/jenkins/repo_projects/scripts/.git/hooks/pre-commit.sample
+/var/lib/jenkins/repo_projects/scripts/.git/hooks/pre-rebase.sample
+/var/lib/jenkins/repo_projects/scripts/.git/hooks/update.sample
+/var/lib/jenkins/repo_projects/scripts/.git/hooks/pre-push.sample
+/var/lib/jenkins/repo_projects/scripts/.git/hooks/pre-merge-commit.sample
+/var/lib/jenkins/repo_projects/scripts/.git/hooks/push-to-checkout.sample
+/var/lib/jenkins/repo_projects/scripts/.git/hooks/fsmonitor-watchman.sample
+/var/lib/jenkins/repo_projects/scripts/.git/hooks/pre-receive.sample
+/var/lib/jenkins/repo_projects/scripts/.git/hooks/applypatch-msg.sample
+/var/lib/jenkins/repo_projects/scripts/.git/hooks/post-update.sample
+/var/lib/jenkins/repo_projects/scripts/.git/hooks/commit-msg.sample
+/var/lib/jenkins/repo_projects/scripts/.git/hooks/pre-applypatch.sample
+/var/lib/jenkins/repo_projects/scripts/.git/hooks/prepare-commit-msg.sample
+/var/lib/jenkins/repo_projects/scripts/.git/index
+/var/lib/jenkins/repo_projects/scripts/.git/COMMIT_EDITMSG
+/var/lib/jenkins/repo_projects/scripts/.git/description
+/var/lib/jenkins/repo_projects/scripts/.git/config
+/var/lib/jenkins/repo_projects/scripts/.git/FETCH_HEAD
+/var/lib/jenkins/repo_projects/scripts/.git/objects/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/cb/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/cb/d5ed36c05cb19192ac352a9f4e5fbcd001d8fa
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f0/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f0/d6fbefd95ff2f7dfcdb4331f8caf7e9a87d515
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f0/865bf26c7834bc5e3b4e61df3f1bc4f084dfe5
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f0/0b018a4f017172ac343a5dd4eb419c7944117d
+/var/lib/jenkins/repo_projects/scripts/.git/objects/73/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/73/d5611363d6a2e1b8f09c537063dd06c14ae90d
+/var/lib/jenkins/repo_projects/scripts/.git/objects/90/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/90/b7e49917d8fe99242ef771d11c2e5b0864dee0
+/var/lib/jenkins/repo_projects/scripts/.git/objects/91/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/91/4cc8e7a58013fdec3ef053f34f5fc92f8ae546
+/var/lib/jenkins/repo_projects/scripts/.git/objects/da/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/da/b80f942c9bf9365d2ab81d47af28b0c7565af5
+/var/lib/jenkins/repo_projects/scripts/.git/objects/20/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/20/b02504f678d6acafee24aeb61cfe704c6c2a7a
+/var/lib/jenkins/repo_projects/scripts/.git/objects/81/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/81/25a57721ec36f9c5624edd139e6e42df8e4edf
+/var/lib/jenkins/repo_projects/scripts/.git/objects/info/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/38/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/38/9c66de12f850b517865ba41ba398930d0d1f3a
+/var/lib/jenkins/repo_projects/scripts/.git/objects/38/b3482910617e995a19ccfc52defa16e755bcf6
+/var/lib/jenkins/repo_projects/scripts/.git/objects/e3/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/e3/e000a7c742c43570d484bd4155205f47a78460
+/var/lib/jenkins/repo_projects/scripts/.git/objects/77/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/77/b5d805bbd473295708e55314bc516ebaa302a6
+/var/lib/jenkins/repo_projects/scripts/.git/objects/79/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/79/a072e61632bcea11d4b37664906d1e4499c842
+/var/lib/jenkins/repo_projects/scripts/.git/objects/0e/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/0e/8dfa3f0129f766d7b977ae025f53f96fc2930f
+/var/lib/jenkins/repo_projects/scripts/.git/objects/35/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/35/dfd6f9c4fb77976ae687b6bde264e406fa902b
+/var/lib/jenkins/repo_projects/scripts/.git/objects/35/262fad0f303c5a26b6a1ba201ac6c19e15b00e
+/var/lib/jenkins/repo_projects/scripts/.git/objects/35/8a99962e622860b03c9bad06199fed498e6a9e
+/var/lib/jenkins/repo_projects/scripts/.git/objects/pack/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/7e/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/7e/3ed9765d3e74cdbdbd5f1582d5acaa60118117
+/var/lib/jenkins/repo_projects/scripts/.git/objects/30/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/30/a6fd585e5a7f88eb353eacc166d7644581df7a
+/var/lib/jenkins/repo_projects/scripts/.git/objects/fa/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/fa/79f624cd6171ec030e8085a7196474ec42d7b0
+/var/lib/jenkins/repo_projects/scripts/.git/objects/19/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/19/096ccb40741b9e5f6a880219314b9df4f99cbd
+/var/lib/jenkins/repo_projects/scripts/.git/objects/19/bf8c1ed81e799a4b7a38c867a19359a684b3e3
+/var/lib/jenkins/repo_projects/scripts/.git/objects/19/370d65a185c9c01f273c2951597a7a286eebf9
+/var/lib/jenkins/repo_projects/scripts/.git/objects/19/fed7d5f3514fde3a52182a7ee09b4478cbca2d
+/var/lib/jenkins/repo_projects/scripts/.git/objects/ec/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/ec/b354dcc8dde7013715596793429356e9854b38
+/var/lib/jenkins/repo_projects/scripts/.git/objects/95/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/95/ddbe19d9399acf57325e9f2d5ca4e102918394
+/var/lib/jenkins/repo_projects/scripts/.git/objects/9d/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/9d/bd2de13a5c1f6dbbcddd7bea6c84a747e6a32e
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f2/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f2/7fd3dfe4073363999b314725955e88dd6582cd
+/var/lib/jenkins/repo_projects/scripts/.git/objects/b0/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/b0/cbfabaca3b37a3d10c1c092ea040f28d35ef1b
+/var/lib/jenkins/repo_projects/scripts/.git/objects/fb/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/fb/1586758013249a57500cb7bc9bec326dfb2876
+/var/lib/jenkins/repo_projects/scripts/.git/objects/fb/298ee788a784741300b3c871e9f87c89c7d06c
+/var/lib/jenkins/repo_projects/scripts/.git/objects/fb/93961879828d7c4eaeb89e7a920b38d9d47324
+/var/lib/jenkins/repo_projects/scripts/.git/objects/57/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/57/98a6d34f062e338c06f193071885c4e4884edb
+/var/lib/jenkins/repo_projects/scripts/.git/objects/21/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/21/bd2eb44415494fda5a66a799c22dc8ff50a4b9
+/var/lib/jenkins/repo_projects/scripts/.git/objects/21/fc1537402df892e2a86e04edbbbc29f2bb839c
+/var/lib/jenkins/repo_projects/scripts/.git/objects/4d/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/4d/44b368ab953e0d46340d93de4c4eb9890e0c14
+/var/lib/jenkins/repo_projects/scripts/.git/objects/ba/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/ba/81a65ace278844c010ae81583a0e934c78ae95
+/var/lib/jenkins/repo_projects/scripts/.git/objects/ba/5410af499457c2669e9ae53d88398e8078435e
+/var/lib/jenkins/repo_projects/scripts/.git/objects/b7/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/b7/85c7d27377dca065f305189177ebf777a699fc
+/var/lib/jenkins/repo_projects/scripts/.git/objects/2e/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/2e/7c62f3d14d7c802270a57ad3ef9b6d8b459f67
+/var/lib/jenkins/repo_projects/scripts/.git/objects/7f/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/7f/ca2249b374e7d924718d72e53cd8b5cfeee0f6
+/var/lib/jenkins/repo_projects/scripts/.git/objects/5b/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/5b/f59a2cdf38d640c60869eb8364bef02b162f79
+/var/lib/jenkins/repo_projects/scripts/.git/objects/5b/06eff823373f03c5ff151fab822a255f638077
+/var/lib/jenkins/repo_projects/scripts/.git/objects/1a/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/1a/590f2879037679679c1ce5382c558c262b0a7d
+/var/lib/jenkins/repo_projects/scripts/.git/objects/6c/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/6c/65a4125c0f6a8a3217eda6579aa0a7c205e079
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f3/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f3/e47d64417bfa6ee2950c4a0d9a64e3aa6b849b
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a9/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a9/39b9e085e40781ed8373dd322f6581795427a6
+/var/lib/jenkins/repo_projects/scripts/.git/objects/49/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/49/d7203352a6e36b73d3a117b52b7ab7b06a66db
+/var/lib/jenkins/repo_projects/scripts/.git/objects/49/926c265185467d0723e2d39b50478614e2dae8
+/var/lib/jenkins/repo_projects/scripts/.git/objects/34/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/34/3a6baff076f6307e5e8dcf5902fd3cea3cbbc8
+/var/lib/jenkins/repo_projects/scripts/.git/objects/34/2037d7646e5ab25104d9dfe883896c10c384e2
+/var/lib/jenkins/repo_projects/scripts/.git/objects/39/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/39/7da3325af46a2a78fd78ecbcffe8c15e74db32
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a3/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a3/129e34710adb654904bcac3fd9b98ac7f5197b
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a3/d2175455cf99002cda89ebf58654ed0a709f4e
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a3/412037eea017a27370274f7e572dae094fdcf8
+/var/lib/jenkins/repo_projects/scripts/.git/objects/c4/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/c4/e090a1bd96b09129874f169befcf42caa74f38
+/var/lib/jenkins/repo_projects/scripts/.git/objects/c4/b4e5a4658d17be2fbd7eb2640eba380189913e
+/var/lib/jenkins/repo_projects/scripts/.git/objects/32/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/32/e98dc0963c2596f594a2f9fc8148f7bcc07b2e
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f9/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f9/fc54aa37c83123d76949f26d662ab9d2ef3ccb
+/var/lib/jenkins/repo_projects/scripts/.git/objects/6a/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/6a/2770679fe17bb86da5f72291e928ccb7aefe01
+/var/lib/jenkins/repo_projects/scripts/.git/objects/e4/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/e4/bb7e3de06864394cf732303d63c206b5a1d732
+/var/lib/jenkins/repo_projects/scripts/.git/objects/4c/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/4c/1eaf733c4fbaf61b90f151ee54d23aaf6b2db6
+/var/lib/jenkins/repo_projects/scripts/.git/objects/4c/c2b1c91713cf835c5dd76fdd2e46ed3c301504
+/var/lib/jenkins/repo_projects/scripts/.git/objects/3a/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/3a/397a8e7109e84e71007816768e85d4481b306a
+/var/lib/jenkins/repo_projects/scripts/.git/objects/1d/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/1d/0eaaf1542297df9e0068d9384b5ec01fbabe25
+/var/lib/jenkins/repo_projects/scripts/.git/objects/33/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/33/2a73b73dde4272276d5fdd39be9024f0ee0460
+/var/lib/jenkins/repo_projects/scripts/.git/objects/00/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/00/65db3bbf282785b70bac2a67667a085daf7200
+/var/lib/jenkins/repo_projects/scripts/.git/objects/00/e7ff6eb2039afe439c745c7fdf843775680af7
+/var/lib/jenkins/repo_projects/scripts/.git/objects/40/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/40/1b120292b2e68d17987c2a60156781ba5437b4
+/var/lib/jenkins/repo_projects/scripts/.git/objects/13/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/13/7c52aae1c5d38de719d16e2d16a843ea49e17e
+/var/lib/jenkins/repo_projects/scripts/.git/objects/74/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/74/46dcdddf59ba56e89fc9588a1ee9125457c5bd
+/var/lib/jenkins/repo_projects/scripts/.git/objects/0d/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/0d/52a3241b7be934d0f47d5951e2cdc83212db90
+/var/lib/jenkins/repo_projects/scripts/.git/objects/0d/7f41d6d8944f73dd1e9cea3b20670ec1ab0520
+/var/lib/jenkins/repo_projects/scripts/.git/objects/d4/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/d4/c091c7ce9174b1abbe213b0a4f45dd4b4b4a05
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a8/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a8/e10033ad772931e7cfbc6b5edbd589d8c4a24d
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a8/8725428ce4f993b30141748d8fe42a35ff0414
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a0/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a0/b76a92869ef80d0db4b6c33dee6c455e52ea86
+/var/lib/jenkins/repo_projects/scripts/.git/objects/0a/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/0a/917e249ff549de0ae479fe9b1e907c97acb684
+/var/lib/jenkins/repo_projects/scripts/.git/objects/29/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/29/ed3100262cb10269fc818cfbf6e6ada17eacf4
+/var/lib/jenkins/repo_projects/scripts/.git/objects/dd/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/dd/444897706fe6442002b403d25047e87da1b171
+/var/lib/jenkins/repo_projects/scripts/.git/objects/c9/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/c9/5f185169505bf096dd654f6dc13439f4aace69
+/var/lib/jenkins/repo_projects/scripts/.git/objects/b4/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/b4/87edf5a58e81b848331f1557f7fe0642e1befb
+/var/lib/jenkins/repo_projects/scripts/.git/objects/61/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/61/ac8d3192494374bb47efb557ac2a825939af82
+/var/lib/jenkins/repo_projects/scripts/.git/objects/94/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/94/3ba5fdd5c210b1e04400cef1bf3b70a8b28dac
+/var/lib/jenkins/repo_projects/scripts/.git/objects/94/c1b20d23c9f744b851c880a48ecb33f7b123ca
+/var/lib/jenkins/repo_projects/scripts/.git/objects/af/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/af/eb200211e850a5b98adcdab2f6d9fa2c6c29e8
+/var/lib/jenkins/repo_projects/scripts/.git/objects/2c/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/2c/7d69aaf50eaad2ceaecebe2e42f52285414b08
+/var/lib/jenkins/repo_projects/scripts/.git/objects/67/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/67/d87d07d38a96ef428ee597d6aee49c57bb6fe5
+/var/lib/jenkins/repo_projects/scripts/.git/objects/9b/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/9b/fec1f440141250e285da62752877b23285baa1
+/var/lib/jenkins/repo_projects/scripts/.git/objects/ef/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/ef/cdb7b9867da7ab9fe23ddd2cfafba0d0f72a80
+/var/lib/jenkins/repo_projects/scripts/.git/objects/e1/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/e1/1a556d05d5c2aa8f20dd2480e0794657f62661
+/var/lib/jenkins/repo_projects/scripts/.git/objects/e1/dc7b7a77e2ed2b9523b18ddbbda66a6997cdf9
+/var/lib/jenkins/repo_projects/scripts/.git/objects/58/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/58/7d8e71f71a9a88dd5f1f091689ca007540d688
+/var/lib/jenkins/repo_projects/scripts/.git/objects/58/80ee9226bd98347048d396e8146251f6ccc648
+/var/lib/jenkins/repo_projects/scripts/.git/objects/89/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/89/392d366606d20943e8db0af5e68227374292f2
+/var/lib/jenkins/repo_projects/scripts/.git/objects/c5/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/c5/2dcd62681213cadbcaa5666bc71ec2505554c7
+/var/lib/jenkins/repo_projects/scripts/.git/objects/3c/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/3c/7c6b69b1cde18e8a85908f7ab65dabb56e177f
+/var/lib/jenkins/repo_projects/scripts/.git/objects/8b/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/8b/8bb7b9424ca79df4dd5539e1c51c0d188d79c9
+/var/lib/jenkins/repo_projects/scripts/.git/objects/46/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/46/8cd698ba9bd888b6901bc4afa6658809c24053
+/var/lib/jenkins/repo_projects/scripts/.git/objects/63/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/63/420e044cd64766fd8775de51d629bfad1a6c13
+/var/lib/jenkins/repo_projects/scripts/.git/objects/4a/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/4a/434432ced89a7aa788ab099db4a93c72db3fb6
+/var/lib/jenkins/repo_projects/scripts/.git/objects/6d/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/6d/18fdc928e7eb9485317d9e02fb01d18be4ad84
+/var/lib/jenkins/repo_projects/scripts/.git/objects/bb/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/bb/ced8b0e364aee18d181dcb30cc1b6982a9f773
+/var/lib/jenkins/repo_projects/scripts/.git/objects/c2/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/c2/8ed0f75aa460b678dabadb8bc6efe5b5f49d86
+/var/lib/jenkins/repo_projects/scripts/.git/objects/16/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/16/8c37fdcbef0e9527b28c16336f15b43e8696ab
+/var/lib/jenkins/repo_projects/scripts/.git/objects/e6/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/e6/97f89464997423b220a724c046d31a39fd94ac
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f5/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f5/d9fd4c8c16c0e8cfceda50bf8b1c16b511af68
+/var/lib/jenkins/repo_projects/scripts/.git/objects/ed/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/ed/00d895bdee1b9b58884171913594c67d179ccb
+/var/lib/jenkins/repo_projects/scripts/.git/objects/c7/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/c7/34f86816b8d1223b4b05c55da64cbcda1f4c50
+/var/lib/jenkins/repo_projects/scripts/.git/objects/55/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/55/3797ce6e7a39ad4dea4e5102d6db5d6f0402aa
+/var/lib/jenkins/repo_projects/scripts/.git/objects/55/e7076a8b81924f078d5a33c62f2ca25caa7251
+/var/lib/jenkins/repo_projects/scripts/.git/objects/01/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/01/2f8c8d691af8a995c9cc2493dc998acf9f4f02
+/var/lib/jenkins/repo_projects/scripts/.git/objects/11/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/11/6deb580aee57c2ad9f9ffe13947ef7e1f37924
+/var/lib/jenkins/repo_projects/scripts/.git/objects/9f/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/9f/0459eae0bac1a20ad37ad0750456dc445160af
+/var/lib/jenkins/repo_projects/scripts/.git/objects/cf/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/cf/a3a5a4a8410f5085c7f0061fb488ae1394f6bf
+/var/lib/jenkins/repo_projects/scripts/.git/objects/cf/0f8cabf9b5057c7326c077e58806f2822459e4
+/var/lib/jenkins/repo_projects/scripts/.git/objects/9a/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/9a/03a1baa18fe6eadb8c6d139d9c50078f94dc8a
+/var/lib/jenkins/repo_projects/scripts/.git/objects/27/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/27/efe5cad4f3f0e1570b70d52db59d35690f455f
+/var/lib/jenkins/repo_projects/scripts/.git/objects/d2/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/d2/9b0e5337e153d929aae7a7dc4e1bc9cee6f27d
+/var/lib/jenkins/repo_projects/scripts/.git/objects/d2/bdf66e96f8c700bea1e883ff0bd67cfaa152e6
+/var/lib/jenkins/repo_projects/scripts/.git/objects/8d/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/8d/40f580eea861a3f7d701f93990e7eb084e8f89
+/var/lib/jenkins/repo_projects/scripts/.git/objects/8d/f9926efe24d348d2658b56bac85cd5721147f3
+/var/lib/jenkins/repo_projects/scripts/.git/objects/5d/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/5d/bf5db43663b8b9c896fee11e5b7b70edb3e216
+/var/lib/jenkins/repo_projects/scripts/.git/objects/ee/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/ee/576415e22091aa12bb2958f4facf88779f0fa2
+/var/lib/jenkins/repo_projects/scripts/.git/objects/5f/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/5f/2bb68a00101cfc6f6eb766740180743c0df4ad
+/var/lib/jenkins/repo_projects/scripts/.git/objects/5f/a110c36d64c203f471e3bfe0a2003f7700a85d
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f4/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f4/3167aa760aed4b67c19b09e7302dc7ad8f72fb
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a6/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a6/c61f061e1941e7a48b81988e1c57f93ebe153d
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a6/6d01ce58e6423ac6bcd9ad426309e0c69441be
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f1/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f1/3f258db71342031685bbd59e006129e85b8051
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f1/a9c8566eabf13bf851edcf88517ae0fa68a31f
+/var/lib/jenkins/repo_projects/scripts/.git/objects/ce/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/ce/2cfe6b37ac7fec2d6d8c0fa4250cfc2b3a65ad
+/var/lib/jenkins/repo_projects/scripts/.git/objects/b2/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/b2/39c04fee5239678dd449c72c65ffd88223961b
+/var/lib/jenkins/repo_projects/scripts/.git/objects/cc/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/cc/b5aaaf7bb659052210308181f2580619dfc192
+/var/lib/jenkins/repo_projects/scripts/.git/objects/d7/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/d7/19e1e29a9447ee390f1904066ebdf4be7828f5
+/var/lib/jenkins/repo_projects/scripts/.git/objects/d7/70fc3b41533fdb854b5b8392825f2ea9c4b9f0
+/var/lib/jenkins/repo_projects/scripts/.git/objects/1f/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/1f/16740dc59ee99ad3c98e1ab7d573207b53805a
+/var/lib/jenkins/repo_projects/scripts/.git/objects/4e/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/4e/bec6eb934034b98394fb9e36ff0e709467f7e0
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f7/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f7/11c2a9ad1ec33fbe85cffe94918999b51cb3ce
+/var/lib/jenkins/repo_projects/scripts/.git/objects/f7/3d19d9e59fe6c2c0ae3574bcc67326572e6e29
+/var/lib/jenkins/repo_projects/scripts/.git/objects/c1/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/c1/89b8537b68488feb8b728e63de22bf2fd4a219
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a7/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a7/faeb832de0a8bb0c6bfd6b59dee40777901361
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a7/597bd956cccb490c4fd8617117ff49070b1f53
+/var/lib/jenkins/repo_projects/scripts/.git/objects/e5/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/e5/c394589a07543bb30979debac835551f784239
+/var/lib/jenkins/repo_projects/scripts/.git/objects/0b/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/0b/1fe6eae342164f05d8697b9e9fadff8e30201f
+/var/lib/jenkins/repo_projects/scripts/.git/objects/85/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/85/811ab7c4e925aacc21db04f607d38d91cc4a73
+/var/lib/jenkins/repo_projects/scripts/.git/objects/0f/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/0f/52ed2c7b32c79bf0ca2afb710ad01b19f4d954
+/var/lib/jenkins/repo_projects/scripts/.git/objects/52/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/52/424bd07823ad5d44e3822a5974f8665ba846f9
+/var/lib/jenkins/repo_projects/scripts/.git/objects/75/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/75/c88564b167b74ec5ec5186e8843a09416feae3
+/var/lib/jenkins/repo_projects/scripts/.git/objects/75/9b00d6cdd4611972bc0f61a8bdd55c2bf94efe
+/var/lib/jenkins/repo_projects/scripts/.git/objects/e2/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/e2/21b32c3dbe13556cdd68a7a5534bda2642bb64
+/var/lib/jenkins/repo_projects/scripts/.git/objects/e2/8a1290dbfc77441e8364e25b5efac95585a000
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a4/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/a4/2014f81c4aa84209083666644f61048d118da4
+/var/lib/jenkins/repo_projects/scripts/.git/objects/36/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/36/0b3aa142233e8843d99262326000cba5471f95
+/var/lib/jenkins/repo_projects/scripts/.git/objects/be/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/be/3f95803cb541ff27a3cd18382086c0642a5e0d
+/var/lib/jenkins/repo_projects/scripts/.git/objects/be/9ae804a33e83f04f7c62b6328b829da6512466
+/var/lib/jenkins/repo_projects/scripts/.git/objects/b6/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/b6/d90be6e26b3268c4bbfb149421ee4c265bb4d4
+/var/lib/jenkins/repo_projects/scripts/.git/objects/68/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/68/e2f43f73a7dd645d9d851a883ed163efd9c1e4
+/var/lib/jenkins/repo_projects/scripts/.git/objects/b9/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/b9/acd9818c268acaf0f923fa984cfc8dcf322990
+/var/lib/jenkins/repo_projects/scripts/.git/objects/ca/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/ca/f10b46bb170d73d30538d0e0a0752cdcf96f67
+/var/lib/jenkins/repo_projects/scripts/.git/objects/5e/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/5e/be7f0c922fff95c411fe010772cf15bc36b507
+/var/lib/jenkins/repo_projects/scripts/.git/objects/56/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/56/aa09b3c8a16d3176d94376630c53a173827b49
+/var/lib/jenkins/repo_projects/scripts/.git/objects/14/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/14/e98baa5fb9ebec39bf8e57ca9a093d22dc039a
+/var/lib/jenkins/repo_projects/scripts/.git/objects/08/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/08/4336bd08303c2aea0172dc4ac1a4073d0d5631
+/var/lib/jenkins/repo_projects/scripts/.git/objects/83/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/83/f558203760d2d34bc4a8c34cbf3ef12bc28f0a
+/var/lib/jenkins/repo_projects/scripts/.git/objects/51/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/51/e084dd3064c62064d74ada3fff53fa8654c0d9
+/var/lib/jenkins/repo_projects/scripts/.git/objects/04/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/04/27f3962a3a7139f94e7529fc4e2f9f9b63e2eb
+/var/lib/jenkins/repo_projects/scripts/.git/objects/dc/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/dc/2c65fefdc59948d2c98b3a9b492575f592f0d6
+/var/lib/jenkins/repo_projects/scripts/.git/objects/72/
+/var/lib/jenkins/repo_projects/scripts/.git/objects/72/a91f5fc8e2b2ec858529cf82d8fad2b2ff56ad
+/var/lib/jenkins/repo_projects/scripts/.git/objects/72/6d8db90d84ee3aae8b80c5889d62a2d92944c5
+/var/lib/jenkins/repo_projects/scripts/.git/objects/72/1ba6d77a5e022b1efdb7c5f5a482a763270eae
+/var/lib/jenkins/repo_projects/scripts/sonar-project.properties
+/var/lib/jenkins/repo_projects/scripts/update.sh
+/var/lib/jenkins/repo_projects/scripts/packages/
+/var/lib/jenkins/repo_projects/scripts/packages/requierment_linux.txt
+/var/lib/jenkins/repo_projects/scripts/packages/requierment.txt
+/var/lib/jenkins/repo_projects/scripts/README.md
+/var/lib/jenkins/repo_projects/scripts/log_Msg.py
+/var/lib/jenkins/repo_projects/scripts/Exit_code_checker.sh
+/var/lib/jenkins/repo_projects/scripts/requierment_linux.sh
+/var/lib/jenkins/repo_projects/scripts/backup.sh
+/var/lib/jenkins/repo_projects/scripts/Health_check.py
+/var/lib/jenkins/repo_projects/scripts/pipeline_jenkins/
+/var/lib/jenkins/repo_projects/scripts/pipeline_jenkins/pipeline_sonarqube
+/var/lib/jenkins/repo_projects/scripts/pipeline_jenkins/pipeline_test
+Backup Completed !
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] echo
+connection to INTERNET ===> SAFE+
+[Pipeline] echo
+connection to DEPLOYMENT_SERVER ===> SAFE+
+[Pipeline] echo
+connection is OK !
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+[Pipeline] echo
+Deploying application .... 
+[Pipeline] dir
+Running in /var/lib/jenkins/workspace/pipeline_test/ansible
+[Pipeline] {
+[Pipeline] sh
++ sudo -u javande ansible-playbook playbooks/play.yml
+
+PLAY [dc_client] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.1.7]
+
+TASK [build file] **************************************************************
+changed: [192.168.1.7]
+
+TASK [write on file] ***********************************************************
+changed: [192.168.1.7]
+
+TASK [change line in file] *****************************************************
+changed: [192.168.1.7]
+
+TASK [goaaal] ******************************************************************
+changed: [192.168.1.7]
+
+PLAY RECAP *********************************************************************
+192.168.1.7                : ok=5    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+Done!
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS

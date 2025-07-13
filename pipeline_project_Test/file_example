@@ -1,0 +1,30 @@
+def buildapp() {
+    echo "Building the application......"
+    echo "Building.."
+    sh '''
+    echo "doing build command.."
+    '''
+
+}
+
+def testapp() {
+    echo "Testing the application......"
+    echo "installing the app in 1.2 version"
+    sh '''
+    echo "doing test command.."
+    '''
+}
+
+def deployapp() {
+    echo 'Deliver....'
+    sh '''
+    echo "doing delivery command.."
+    '''
+    withCredentials([
+            usernamePassword(credentials: 'sever_credentialID', usernameVariable: user, passwordVariable: pwd)
+    ]) {
+            sh "some command ${user} ${pwd}" // some command to use them as args and loggin using that credentials .
+    }
+}
+
+return this

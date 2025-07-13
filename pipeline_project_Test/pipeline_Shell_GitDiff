@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("Checkout_SCM_ansible") {
+            steps {
+                dir("ansible") {
+                    git branch: "main" , url: "https://github.com/linux-best/ansible"
+                }
+            }
+        }
+        stage("Checkout_SCM_scripts") {
+            steps {
+                dir("scripts") {
+                    git branch: "main" , url: "https://github.com/linux-best/scripts"
+                }
+            }
+        }
+        stage('shell_execute') {
+            parallel {
+                stage('Task A') {
+                    steps {
+                        dir('ansible') {
+                            sh "pwd && ls -l"
+                            sh "git fetch origin main"
+                            script {
+                                def value = sh(script:'git diff --quit origin/main...HEAD',returnStatus: true)
+                                def ansible_change_list = sh(script:'git diff --name-only',returnStdout: true).trim()
+                                echo "${value} and ${ansible_change_list}"
+                            }
+                        }
+                    }
+                }
+                stage('Task B') {
+                    steps{
+                        dir('scripts') {
+                            sh "pwd && ls -l"
+                            sh "git fetch origin main"
+                            script {
+                                def value = sh(script:'git diff --quit origin/main...HEAD',returnStatus: true)
+                                def ansible_change_list = sh(script:'git diff --name-only',returnStdout: true).trim()
+                                echo "${value} and ${ansible_change_list}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

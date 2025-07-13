@@ -1,0 +1,61 @@
+def gv
+var = getGitChanges() // example but we can use poll scm
+pipeline {
+    agent any
+    environment {
+        new_version = "1.2.1" // using variables
+        new_credentials = credentials('server_credentialID') // but you need to install a credential binding plugin 
+    }
+
+    stages {
+        stage('Init') {
+            steps {
+                echo "Initializing......"
+                script {
+                    def gv = load "file.groovy"
+                }
+            }
+        }
+        stage('Build') {
+            when { 
+                expression {
+                    // BRANCH_NAME == "main" || BRANCH_NAME == "dev" 
+                    BRANCH_NAME == "main" && var == true
+                }
+            }
+            steps {
+                script {
+                    gv.buildapp()
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                script {
+                    gv.testapp()
+                }
+            }
+        }
+        stage('Deliver') {
+            steps {
+                script {
+                    gv.deployapp()
+                }
+            }
+        }
+    }
+    post {
+        always {
+            // send an email
+        }
+        success {
+            // do smth
+        }
+        failure {
+            // do smth
+        }
+    }
+}
+
+
+// 1.post 2.conditions 3.reglaur_expression 4.env_variables 5.credentials
